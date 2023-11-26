@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using TagsPractica.DAL.Repositories;
 using TagsPractica.Models;
 
 namespace TagsPractica.Controllers
@@ -7,14 +8,32 @@ namespace TagsPractica.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private IBlogRepository _blogRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IBlogRepository blogRepository)
         {
             _logger = logger;
+            _blogRepository = blogRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            // Добавим создание нового пользователя
+            var newUser = new User()
+            {
+                Id = Guid.NewGuid(),
+                userName = "Andrey",
+                password = "Petrov",
+                email = "1@1.ru"
+                // = DateTime.Now
+            };
+
+            // Добавим в базу
+            await _blogRepository.AddUser(newUser);
+
+            // Выведем результат
+            Console.WriteLine($"User with id {newUser.Id}, named {newUser.userName} was successfully added on {newUser.email}");
+
             return View();
         }
 
