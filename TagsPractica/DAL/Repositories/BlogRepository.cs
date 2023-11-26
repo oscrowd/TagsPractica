@@ -16,6 +16,9 @@ namespace TagsPractica.DAL.Repositories
         public async Task AddUser(User user)
         {
             // Добавление пользователя
+            user.Id = Guid.NewGuid();
+
+            // Добавление пользователя
             var entry = _context.Entry(user);
             if (entry.State == EntityState.Detached)
                 await _context.Users.AddAsync(user);
