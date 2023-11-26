@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,18 +9,21 @@ using Microsoft.EntityFrameworkCore;
 using TagsPractica.DAL;
 using TagsPractica.DAL.Repositories;
 using TagsPractica.Models;
+using TagsPractica.ViewModels;
 
 namespace TagsPractica.Controllers
 {
     public class UsersController : Controller
     {
+        private IMapper _mapper;
         private readonly DatabaseContext _context;
-        private IBlogRepository _blogRepository;
+        private IUserRepository _userRepository;
 
-        public UsersController(DatabaseContext context, IBlogRepository blogRepository)
+        public UsersController(IMapper mapper, DatabaseContext context, IUserRepository userRepository)
         {
             _context = context;
-            _blogRepository = blogRepository;
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         // GET: Users
@@ -175,10 +179,27 @@ namespace TagsPractica.Controllers
         {
 
             // Добавим в базу
-            await _blogRepository.AddUser(user);
+            await _userRepository.AddUser(user);
             // Выведем результат
             Console.WriteLine($"User with id {user.Id}, named {user.userName} was successfully added on {user.email}");
             return View(user);
+        }
+
+        [HttpGet]
+        public IActionResult Register2()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register2(RegisterViewModel model)
+        {
+            var user = _mapper.Map<User>(model);
+            // Добавим в базу
+            await _userRepository.AddUser(user);
+            // Выведем результат
+            Console.WriteLine($"User with id {user.Id}, named {user.userName} was successfully added on {user.email}");
+            return View(model);
         }
     }
 }

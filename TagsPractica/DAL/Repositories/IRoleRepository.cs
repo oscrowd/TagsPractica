@@ -2,8 +2,8 @@
 
 namespace TagsPractica.DAL.Repositories
 {
-    public interface IBlogRepository
+    public interface IRoleRepository
     {
-        Task AddUser(User user);
+        Task AddRole(Role role);
     }
 }

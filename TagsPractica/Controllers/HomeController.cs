@@ -8,12 +8,12 @@ namespace TagsPractica.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private IBlogRepository _blogRepository;
+        private IUserRepository _userRepository;
 
-        public HomeController(ILogger<HomeController> logger, IBlogRepository blogRepository)
+        public HomeController(ILogger<HomeController> logger, IUserRepository userRepository)
         {
             _logger = logger;
-            _blogRepository = blogRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -28,8 +28,9 @@ namespace TagsPractica.Controllers
                 // = DateTime.Now
             };
 
+
             // Добавим в базу
-            await _blogRepository.AddUser(newUser);
+            await _userRepository.AddUser(newUser);
 
             // Выведем результат
             Console.WriteLine($"User with id {newUser.Id}, named {newUser.userName} was successfully added on {newUser.email}");

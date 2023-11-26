@@ -3,12 +3,12 @@ using TagsPractica.Models;
 
 namespace TagsPractica.DAL.Repositories
 {
-    public class BlogRepository : IBlogRepository
+    public class UserRepository : IUserRepository
     {
         private readonly DatabaseContext _context;
 
         // Метод-конструктор для инициализации
-        public BlogRepository(DatabaseContext context)
+        public UserRepository(DatabaseContext context)
         {
             _context = context;
         }
