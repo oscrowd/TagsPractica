@@ -195,6 +195,11 @@ namespace TagsPractica.Controllers
         public async Task<IActionResult> Register2(RegisterViewModel model)
         {
             var user = _mapper.Map<User>(model);
+            //var roles = _db.UserProfiles.Include(c => c.UserGroup);.UserProfiles.Include(c => c.UserGroup);
+            var roles = _context.Roles;
+            //https://stackoverflow.com/questions/16814450/how-to-populate-a-textbox-based-on-dropdown-selection-in-mvc
+            return View(roles.ToList());
+
             // Добавим в базу
             await _userRepository.AddUser(user);
             // Выведем результат

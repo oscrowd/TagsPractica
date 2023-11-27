@@ -26,5 +26,11 @@ namespace TagsPractica.DAL.Repositories
             // Сохранение изенений
             await _context.SaveChangesAsync();
         }
+
+        public async Task ListRoles(User user)
+        {
+            // Добавление пользователя
+            var listRoles = user.Roles.ToList();
+        }
     }
 }

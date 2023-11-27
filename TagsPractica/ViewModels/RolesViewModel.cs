@@ -2,7 +2,7 @@
 
 namespace TagsPractica.ViewModels
 {
-    public class RegisterViewModel
+    public class RolesViewModel
     {
         [Required]
         [Display(Name = "Имя")]
@@ -16,6 +16,9 @@ namespace TagsPractica.ViewModels
         [Display(Name = "Email")]
         public string? email { get; set; }
 
+        [Required]
+        [Display(Name = "RoomId")]
+        public string? RoomId { get; set; }
 
         /*
         [Required]
