@@ -10,7 +10,7 @@
         public int roleId { get; set; }
         public Role Role { get; set; }
 
-        public virtual ICollection<Role> Roles { get; set; }
+        public virtual ICollection<Role>? Roles { get; set; }
 
 
     }
