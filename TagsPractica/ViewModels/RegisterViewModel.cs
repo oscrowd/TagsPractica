@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.Metrics;
+using TagsPractica.Models;
 
 namespace TagsPractica.ViewModels
 {
@@ -16,7 +20,20 @@ namespace TagsPractica.ViewModels
         [Display(Name = "Email")]
         public string? email { get; set; }
 
+        [Required]
+        [Display(Name = "Роль")]
+        public int? roleId { get; set; }
+        
+        [ForeignKey("roleId")]
+        public virtual Role Role { get; set; }
 
+        [Required]
+        [Display(Name = "Роль2")]
+        public IEnumerable<SelectListItem> Roles { get; set; }
+
+
+        //https://mahedee.net/uses-of-dropdown-list-and-radio-button-in-asp-net-mvc-application-with-entity-framework/
+       
         /*
         [Required]
         [DataType(DataType.Password)]

@@ -188,6 +188,7 @@ namespace TagsPractica.Controllers
         [HttpGet]
         public IActionResult Register2()
         {
+            
             return View();
         }
 
@@ -196,9 +197,15 @@ namespace TagsPractica.Controllers
         {
             var user = _mapper.Map<User>(model);
             //var roles = _db.UserProfiles.Include(c => c.UserGroup);.UserProfiles.Include(c => c.UserGroup);
-            var roles = _context.Roles;
+            var tempM = new RegisterViewModel();
+            //var roles = _context.Roles.Select(p => new SelectListItem
+            //{
+            //    //Value = p.Id,
+            //    Text = p.roleName
+            //}).ToList();
+           // return View(roles);
             //https://stackoverflow.com/questions/16814450/how-to-populate-a-textbox-based-on-dropdown-selection-in-mvc
-            return View(roles.ToList());
+            //return View(roles.ToList());
 
             // Добавим в базу
             await _userRepository.AddUser(user);
