@@ -188,7 +188,8 @@ namespace TagsPractica.Controllers
         [HttpGet]
         public IActionResult Register2()
         {
-            
+            ViewBag.roleId = new SelectList(_context.Roles, "Id", "roleName");
+            ViewBag.Categories = _context.Roles.ToList();
             return View();
         }
 

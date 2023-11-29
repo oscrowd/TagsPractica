@@ -30,10 +30,10 @@ namespace TagsPractica.Controllers
 
 
             // Добавим в базу
-            await _userRepository.AddUser(newUser);
+            //await _userRepository.AddUser(newUser);
 
             // Выведем результат
-            Console.WriteLine($"User with id {newUser.Id}, named {newUser.userName} was successfully added on {newUser.email}");
+            //Console.WriteLine($"User with id {newUser.Id}, named {newUser.userName} was successfully added on {newUser.email}");
 
             return View();
         }
