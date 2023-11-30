@@ -22,7 +22,7 @@ namespace TagsPractica.ViewModels
 
         [Required]
         [Display(Name = "Роль")]
-        public int? roleId { get; set; }
+        public int roleId { get; set; }
         
         [ForeignKey("roleId")]
         public virtual Role Role { get; set; }

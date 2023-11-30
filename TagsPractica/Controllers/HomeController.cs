@@ -9,11 +9,14 @@ namespace TagsPractica.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private IUserRepository _userRepository;
+        private IRoleRepository _roleRepository;
 
-        public HomeController(ILogger<HomeController> logger, IUserRepository userRepository)
+        public HomeController(ILogger<HomeController> logger, IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
+            
         }
 
         public async Task<IActionResult> Index()
@@ -28,10 +31,24 @@ namespace TagsPractica.Controllers
                 // = DateTime.Now
             };
 
+            var newRole1 = new Role()
+            {
+                roleName = "Admin"
+            };
+            var newRole2 = new Role()
+            {
+               roleName = "Moderator"
+            };
+            var newRole3 = new Role()
+            {
+                roleName = "User"
+            };
 
             // Добавим в базу
             //await _userRepository.AddUser(newUser);
-
+            await _roleRepository.AddRole(newRole1);
+            await _roleRepository.AddRole(newRole2);
+            await _roleRepository.AddRole(newRole3);
             // Выведем результат
             //Console.WriteLine($"User with id {newUser.Id}, named {newUser.userName} was successfully added on {newUser.email}");
 

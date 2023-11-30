@@ -25,6 +25,16 @@
                     </tr>
 
                 </table>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.roleId, "Role", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @*@Html.DropDownList("PossibleCountries", String.Empty)*@
+                        @Html.DropDownList("roleId", "Выбрать роль")
+                        @Html.ValidationMessageFor(model => model.roleId)
+                    </div>
+                </div>
+
                 <br>
                 <div class="submit-button">
                     <input type="submit" value="Регистрация" />

@@ -204,14 +204,14 @@ namespace TagsPractica.Controllers
             //    //Value = p.Id,
             //    Text = p.roleName
             //}).ToList();
-           // return View(roles);
+            // return View(roles);
             //https://stackoverflow.com/questions/16814450/how-to-populate-a-textbox-based-on-dropdown-selection-in-mvc
             //return View(roles.ToList());
-
+            user.roleId = tempM.roleId;
             // Добавим в базу
             await _userRepository.AddUser(user);
             // Выведем результат
-            Console.WriteLine($"User with id {user.Id}, named {user.userName} was successfully added on {user.email}");
+            Console.WriteLine($"User with id {user.Id}, named {user.userName} was successfully added on {user.email} and {user.roleId}");
             return View(model);
         }
     }
