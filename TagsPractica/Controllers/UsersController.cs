@@ -10,6 +10,7 @@ using TagsPractica.DAL;
 using TagsPractica.DAL.Repositories;
 using TagsPractica.Models;
 using TagsPractica.ViewModels;
+using System.Security.Authentication;
 
 namespace TagsPractica.Controllers
 {
@@ -168,6 +169,12 @@ namespace TagsPractica.Controllers
           return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+        private bool UserExistsName(string userName)
+        {
+            return (_context.Users?.Any(e => e.userName == userName)).GetValueOrDefault();
+        }
+
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -191,14 +198,14 @@ namespace TagsPractica.Controllers
             ViewBag.roleId = new SelectList(_context.Roles, "Id", "roleName");
             ViewBag.Categories = _context.Roles.ToList();
             return View();
-        }
 
+        }
         [HttpPost]
         public async Task<IActionResult> Register2(RegisterViewModel model)
         {
             var user = _mapper.Map<User>(model);
             //var roles = _db.UserProfiles.Include(c => c.UserGroup);.UserProfiles.Include(c => c.UserGroup);
-            var tempM = new RegisterViewModel();
+            //var tempM = new RegisterViewModel();
             //var roles = _context.Roles.Select(p => new SelectListItem
             //{
             //    //Value = p.Id,
@@ -207,12 +214,46 @@ namespace TagsPractica.Controllers
             // return View(roles);
             //https://stackoverflow.com/questions/16814450/how-to-populate-a-textbox-based-on-dropdown-selection-in-mvc
             //return View(roles.ToList());
-            user.roleId = tempM.roleId;
+            //user.roleId = tempM.roleId;
             // Добавим в базу
             await _userRepository.AddUser(user);
             // Выведем результат
             Console.WriteLine($"User with id {user.Id}, named {user.userName} was successfully added on {user.email} and {user.roleId}");
             return View(model);
+        }
+
+
+        [HttpGet]
+        public IActionResult  Authenticate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        //[Route("authenticate")]
+        public IActionResult Authenticate (RegisterViewModel model)
+        {
+            if (String.IsNullOrEmpty(model.userName) || String.IsNullOrEmpty(model.password))
+                throw new ArgumentNullException("Запрос не корректен");
+            //User user = _userRepository.GetByLogin(model);
+            bool exist = this.UserExistsName(model.userName);
+            model.existUser = exist;
+            if (exist)
+            {
+                return RedirectToAction(nameof(HomeController.Index));
+            }
+            else
+            {
+                return View(model);
+            }
+            
+            
+
+            //throw new AuthenticationException("Пользователь найден");
+            //if (user.password != model.password)
+            //    throw new AuthenticationException("Введенный пароль не корректен");
+            //return _mapper.Map<RegisterViewModel>(user);
+
         }
     }
 }

@@ -10,7 +10,7 @@ namespace TagsPractica.DAL
         
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

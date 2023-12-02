@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel;
 using TagsPractica.Models;
 
 namespace TagsPractica.DAL.Repositories
@@ -31,6 +33,14 @@ namespace TagsPractica.DAL.Repositories
         {
             // Добавление пользователя
             var listRoles = user.Roles.ToList();
+        }
+
+        public async Task GetByLogin(string userName, string password)
+        {
+            //_context.Users.Any(userName == userName).GetValueOrDefault();
+            
+            // bool exist = _context.ContextId(user.Id);
+            //_context.Users.Contains(model);
         }
     }
 }

@@ -17,23 +17,23 @@
                     </tr>
                     <tr>
                         <td>Пароль:</td>
-                        <td><input type="text" name="password" /></td>
+                        <td><input type="password" name="password" /></td>
                     </tr>
                     <tr>
                         <td>Email:</td>
                         <td><input type="text" name="email" /></td>
                     </tr>
-
-                </table>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.roleId, "Role", new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                    <tr>
+                        <td>@Html.LabelFor(model => model.roleId, "Role", new { @class = "control-label col-md-2" })</td>
+                        <td class="col-md-10">
                         @*@Html.DropDownList("PossibleCountries", String.Empty)*@
                         @Html.DropDownList("roleId", "Выбрать роль")
                         @Html.ValidationMessageFor(model => model.roleId)
-                    </div>
-                </div>
+                        </td>>
+                    </tr>
+                </table>
+
+                
 
                 <br>
                 <div class="submit-button">

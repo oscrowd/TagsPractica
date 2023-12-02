@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using TagsPractica.DAL.Repositories;
 using TagsPractica.Models;
+using TagsPractica.ViewModels;
 
 namespace TagsPractica.Controllers
 {
@@ -19,7 +20,7 @@ namespace TagsPractica.Controllers
             
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(RegisterViewModel model)
         {
             // Добавим создание нового пользователя
             var newUser = new User()
@@ -46,13 +47,13 @@ namespace TagsPractica.Controllers
 
             // Добавим в базу
             //await _userRepository.AddUser(newUser);
-            await _roleRepository.AddRole(newRole1);
-            await _roleRepository.AddRole(newRole2);
-            await _roleRepository.AddRole(newRole3);
+            //await _roleRepository.AddRole(newRole1);
+            //await _roleRepository.AddRole(newRole2);
+            //await _roleRepository.AddRole(newRole3);
             // Выведем результат
             //Console.WriteLine($"User with id {newUser.Id}, named {newUser.userName} was successfully added on {newUser.email}");
 
-            return View();
+            return View(model);
         }
 
         public IActionResult Privacy()
