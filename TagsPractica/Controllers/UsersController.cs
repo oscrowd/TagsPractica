@@ -30,9 +30,20 @@ namespace TagsPractica.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-              return _context.Users != null ? 
-                          View(await _context.Users.ToListAsync()) :
-                          Problem("Entity set 'DatabaseContext.Users'  is null.");
+            var user = await _context.Users.ToListAsync();
+            //var entity =_mapper.Map<RegisterViewModel>(user);
+            if (user == null)
+            {
+                return Problem("Entity set 'DatabaseContext.Users'  is null.");
+            }
+            else
+            {
+                return View();
+            }
+            
+                          
+                          
+            
         }
 
         // GET: Users/Details/5
@@ -74,6 +85,12 @@ namespace TagsPractica.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit()
+        {
+            return View();
         }
 
         // GET: Users/Edit/5
@@ -231,23 +248,32 @@ namespace TagsPractica.Controllers
 
         [HttpPost]
         //[Route("authenticate")]
-        public IActionResult Authenticate (RegisterViewModel model)
+        public IActionResult Authenticate(RegisterViewModel model)
         {
+            bool exist;
             if (String.IsNullOrEmpty(model.userName) || String.IsNullOrEmpty(model.password))
-                throw new ArgumentNullException("Запрос не корректен");
+            {
+                exist = false;
+                return View(model);
+            }
+            //throw new ArgumentNullException("Запрос не корректен");
             //User user = _userRepository.GetByLogin(model);
-            bool exist = this.UserExistsName(model.userName);
+            //exist = this.UserExistsName(model.userName);
+
+            exist = _userRepository.GetByLogin(model.userName);
+
             model.existUser = exist;
             if (exist)
             {
                 return RedirectToAction(nameof(HomeController.Index));
+                //return RedirectToAction<HomeController>(m => m.LogIn());
             }
             else
             {
                 return View(model);
             }
-            
-            
+
+
 
             //throw new AuthenticationException("Пользователь найден");
             //if (user.password != model.password)

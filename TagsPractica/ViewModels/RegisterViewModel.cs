@@ -28,9 +28,9 @@ namespace TagsPractica.ViewModels
         [ForeignKey("roleId")]
         public virtual Role Role { get; set; }
 
-        //[Required]
-        //[Display(Name = "Роль2")]
-        //public IEnumerable<SelectListItem> Roles { get; set; }
+        [Required]
+        [Display(Name = "Роль2")]
+        public IEnumerable<SelectListItem> Roles { get; set; }
 
         [Display(Name = "existUser")]
         [DefaultValue(false)]

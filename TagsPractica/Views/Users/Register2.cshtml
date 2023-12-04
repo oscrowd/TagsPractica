@@ -24,22 +24,34 @@
                         <td><input type="text" name="email" /></td>
                     </tr>
                     <tr>
-                        <td>@Html.LabelFor(model => model.roleId, "Role", new { @class = "control-label col-md-2" })</td>
-                        <td class="col-md-10">
-                        @*@Html.DropDownList("PossibleCountries", String.Empty)*@
-                        @Html.DropDownList("roleId", "Выбрать роль")
-                        @Html.ValidationMessageFor(model => model.roleId)
+                        <td>
+                            @Html.LabelFor(model => model.roleId, "Роль", new { @class = "control-label col-md-2" })
+                        </td>
+                        <td class="col-md-10" align="right">
+                            @*@Html.DropDownList("PossibleCountries", String.Empty)*@
+                            @Html.DropDownList("roleId", "Выбрать роль")
+                            @Html.ValidationMessageFor(model => model.roleId)
                         </td>>
                     </tr>
+                    <tr>
+                        <td></td>
+                        <td align="right">
+                        <div class="submit-button" width="300">
+                        <input type="submit" value="Войти" width="300" />
+                        </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td align="right">
+                        <div class="submit-button" width="300">
+                            <input type="submit" value="Создать аккаунт" width="300" />
+                        </div>
+                        </td>
+                    </tr>
                 </table>
-
-                
-
-                <br>
-                <div class="submit-button">
-                    <input type="submit" value="Регистрация" />
-                </div>
             </form>
+            
         }
         else
         {

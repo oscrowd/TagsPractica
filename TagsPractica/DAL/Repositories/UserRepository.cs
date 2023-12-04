@@ -35,12 +35,12 @@ namespace TagsPractica.DAL.Repositories
             var listRoles = user.Roles.ToList();
         }
 
-        public async Task GetByLogin(string userName, string password)
+        public bool GetByLogin(string login)
         {
-            //_context.Users.Any(userName == userName).GetValueOrDefault();
-            
-            // bool exist = _context.ContextId(user.Id);
-            //_context.Users.Contains(model);
+            //var user =_context.Users.FirstOrDefault(v => v.userName == login);
+            bool validUser = _context.Users.Any(v => v.userName == login && v.password == login);
+            return validUser;
         }
+       
     }
 }
