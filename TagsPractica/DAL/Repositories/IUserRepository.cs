@@ -6,5 +6,6 @@ namespace TagsPractica.DAL.Repositories
     {
         Task AddUser(User user);
         bool GetByLogin(string userName);
+        User GetByLogin2(string userName);
     }
 }

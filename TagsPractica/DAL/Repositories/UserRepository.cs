@@ -42,6 +42,14 @@ namespace TagsPractica.DAL.Repositories
             bool validUser = _context.Users.Any(v => v.userName == login && v.password == login);
             return validUser;
         }
-       
+
+        public object GetByLogin2(string login)
+        {
+            //var user =_context.Users.FirstOrDefault(v => v.userName == login);
+            Model model = new Model();
+            model = (Model)_context.Users.Select(v => v.userName == login && v.password == login);
+            return model;
+        }
+
     }
 }

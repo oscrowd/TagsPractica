@@ -249,9 +249,10 @@ namespace TagsPractica.Controllers
             return View();
         }
 
+
         [HttpPost]
         //[Route("authenticate")]
-        public async IActionResult Authenticate(RegisterViewModel model)
+        public IActionResult Authenticate(RegisterViewModel model)
         {
             bool exist;
             if (String.IsNullOrEmpty(model.userName) || String.IsNullOrEmpty(model.password))
@@ -265,17 +266,8 @@ namespace TagsPractica.Controllers
 
             exist = _userRepository.GetByLogin(model.userName);
 
+
             model.existUser = exist;
-            var claims = new List<Claim>()
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, model.userName),
-            };
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(
-                claims, 
-                "AppCookie", 
-                ClaimsIdentity.DefaultNameClaimType, 
-                ClaimsIdentity.DefaultRoleClaimType);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal (claimsIdentity));
             if (exist)
             {
                 return RedirectToAction(nameof(HomeController.Index));
@@ -287,6 +279,44 @@ namespace TagsPractica.Controllers
             }
 
 
+
+            //throw new AuthenticationException("Пользователь найден");
+            //if (user.password != model.password)
+            //    throw new AuthenticationException("Введенный пароль не корректен");
+            //return _mapper.Map<RegisterViewModel>(user);
+
+        }
+
+
+        [HttpPost]
+        //[Route("authenticate")]
+        public async Task<RegisterViewModel> Authenticate2(string login, string password)
+        {
+
+            if (String.IsNullOrEmpty(login) || 
+                String.IsNullOrEmpty(password))
+                throw new ArgumentNullException("Запрос не корректен");
+
+            User user = _userRepository.GetByLogin2(login);
+            if (user is null)
+                throw new AuthenticationException("Пользователь на найден");
+
+            
+            
+            //user.existUser = exist;
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.userName),
+            };
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(
+                claims, 
+                "AppCookie", 
+                ClaimsIdentity.DefaultNameClaimType, 
+                ClaimsIdentity.DefaultRoleClaimType);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal (claimsIdentity));
+
+
+            return _mapper.Map<RegisterViewModel>(user);
 
             //throw new AuthenticationException("Пользователь найден");
             //if (user.password != model.password)
