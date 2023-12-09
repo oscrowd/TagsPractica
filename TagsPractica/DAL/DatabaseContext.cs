@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TagsPractica.Models;
+using TagsPractica.DAL.Models;
+
 
 namespace TagsPractica.DAL
 {
@@ -7,10 +8,14 @@ namespace TagsPractica.DAL
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-        
+        public DbSet<Post> Posts  { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<PostTag> PostsTags { get; set; }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
-            //Database.EnsureDeleted();
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

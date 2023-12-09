@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using TagsPractica.Models;
 using TagsPractica.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TagsPractica.DAL.Models;
 
 namespace TagsPractica
 {

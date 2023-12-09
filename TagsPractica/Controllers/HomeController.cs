@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TagsPractica.DAL.Repositories;
-using TagsPractica.Models;
+using TagsPractica.DAL.Models;
 using TagsPractica.ViewModels;
+
 
 namespace TagsPractica.Controllers
 {
@@ -11,13 +12,14 @@ namespace TagsPractica.Controllers
         private readonly ILogger<HomeController> _logger;
         private IUserRepository _userRepository;
         private IRoleRepository _roleRepository;
+        private IPostRepository _postRepository;
 
-        public HomeController(ILogger<HomeController> logger, IUserRepository userRepository, IRoleRepository roleRepository)
+        public HomeController(ILogger<HomeController> logger, IPostRepository postRepository, IRoleRepository roleRepository, IUserRepository userRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
-            
+            _postRepository = postRepository;
         }
 
         public async Task<IActionResult> Index(RegisterViewModel model)
@@ -28,7 +30,9 @@ namespace TagsPractica.Controllers
                 Id = Guid.NewGuid(),
                 userName = "Andrey",
                 password = "Petrov",
-                email = "1@1.ru"
+                email = "1@1.ru",
+                roleId = 3
+                
                 // = DateTime.Now
             };
 
@@ -45,13 +49,41 @@ namespace TagsPractica.Controllers
                 roleName = "User"
             };
 
+            var DefaultPost = new Post()
+            {
+                title = "default",
+                text = "dafault",
+                //userId =  ConewUser.Id,
+
+            };
+            var DefaultComment = new Comment()
+            {
+                text = "dafault",
+                //userId = newUser.Id,
+                postId = 1
+            };
+            var DefaultTag = new Tag()
+            {
+                text = "default"
+            };
+            var DefaultPostTag = new PostTag()
+            {
+                postId = 1,
+                tagId = 1
+            };
+
             // Добавим в базу
-            //await _userRepository.AddUser(newUser);
-            //await _roleRepository.AddRole(newRole1);
-            //await _roleRepository.AddRole(newRole2);
-            //await _roleRepository.AddRole(newRole3);
+            await _roleRepository.AddRole(newRole1);
+            await _roleRepository.AddRole(newRole2);
+            await _roleRepository.AddRole(newRole3);
+            await _userRepository.AddUser(newUser);
+            //await _postRepository.AddPost(DefaultPost);
+            //await _postRepository.AddComment(DefaultComment);
+            //await _postRepository.AddTag(DefaultTag);
+            //await _postRepository.AddPostTag(DefaultPostTag);
+
             // Выведем результат
-            //Console.WriteLine($"User with id {newUser.Id}, named {newUser.userName} was successfully added on {newUser.email}");
+            Console.WriteLine($"User with id {newUser.Id}, named {newUser.userName} was successfully added on {newUser.email}");
 
             return View(model);
         }

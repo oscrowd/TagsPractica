@@ -2,8 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using TagsPractica.DAL;
 using TagsPractica.DAL.Repositories;
-
-
+using Microsoft.AspNetCore.Authentication;
 
 namespace TagsPractica
 {
@@ -24,8 +23,24 @@ namespace TagsPractica
             builder.Services.AddSingleton(mapper);
             builder.Services.AddSingleton<IUserRepository, UserRepository>();
             builder.Services.AddSingleton<IRoleRepository, RoleRepository>();
-            builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionSQL), ServiceLifetime.Singleton);
-            
+            builder.Services.AddSingleton<IPostRepository, PostRepository>();
+            builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlite(connectionSQL), ServiceLifetime.Singleton);
+
+            //Аутентификация
+            builder.Services.AddAuthentication(options => options.DefaultScheme = "Cookies")
+                .AddCookie("Cookies", options =>
+                {
+                    options.Events = new Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationEvents
+                    {
+                        OnRedirectToLogin = redirectContext =>
+                        {
+                            redirectContext.HttpContext.Response.StatusCode = 401;
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+
+
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             var app = builder.Build();
 
@@ -39,7 +54,7 @@ namespace TagsPractica
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseAuthentication();
+            app.UseAuthentication();  
 
             app.MapControllerRoute(
                 name: "default",

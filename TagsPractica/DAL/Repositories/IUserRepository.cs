@@ -1,4 +1,4 @@
-﻿using TagsPractica.Models;
+﻿using TagsPractica.DAL.Models;
 
 namespace TagsPractica.DAL.Repositories
 {

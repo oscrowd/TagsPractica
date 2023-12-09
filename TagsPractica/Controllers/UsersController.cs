@@ -7,10 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TagsPractica.DAL;
-using TagsPractica.DAL.Repositories;
-using TagsPractica.Models;
 using TagsPractica.ViewModels;
 using System.Security.Authentication;
+using TagsPractica.DAL.Repositories;
+using TagsPractica.DAL.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace TagsPractica.Controllers
 {
@@ -248,7 +251,7 @@ namespace TagsPractica.Controllers
 
         [HttpPost]
         //[Route("authenticate")]
-        public IActionResult Authenticate(RegisterViewModel model)
+        public async IActionResult Authenticate(RegisterViewModel model)
         {
             bool exist;
             if (String.IsNullOrEmpty(model.userName) || String.IsNullOrEmpty(model.password))
@@ -263,6 +266,16 @@ namespace TagsPractica.Controllers
             exist = _userRepository.GetByLogin(model.userName);
 
             model.existUser = exist;
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, model.userName),
+            };
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(
+                claims, 
+                "AppCookie", 
+                ClaimsIdentity.DefaultNameClaimType, 
+                ClaimsIdentity.DefaultRoleClaimType);
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal (claimsIdentity));
             if (exist)
             {
                 return RedirectToAction(nameof(HomeController.Index));

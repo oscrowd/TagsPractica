@@ -1,4 +1,8 @@
-﻿namespace TagsPractica.Models
+﻿namespace TagsPractica.DAL.Models
+
+
+
+
 {
     public class User
     {

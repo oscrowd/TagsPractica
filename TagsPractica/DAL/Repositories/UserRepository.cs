@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel;
-using TagsPractica.Models;
+using TagsPractica.DAL.Models;
 
 namespace TagsPractica.DAL.Repositories
 {
@@ -24,6 +24,7 @@ namespace TagsPractica.DAL.Repositories
             var entry = _context.Entry(user);
             if (entry.State == EntityState.Detached)
                 await _context.Users.AddAsync(user);
+               
 
             // Сохранение изенений
             await _context.SaveChangesAsync();
