@@ -288,35 +288,50 @@ namespace TagsPractica.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult Authenticate2()
+        {
+            return View();
+        }
+
         [HttpPost]
         //[Route("authenticate")]
-        public async Task<RegisterViewModel> Authenticate2(string login, string password)
+        public async Task<IActionResult> Authenticate2(RegisterViewModel model)
         {
 
-            if (String.IsNullOrEmpty(login) || 
-                String.IsNullOrEmpty(password))
+            User user =new User();
+            if (String.IsNullOrEmpty(model.userName) || 
+                String.IsNullOrEmpty(model.password))
                 throw new ArgumentNullException("Запрос не корректен");
 
-            User user = _userRepository.GetByLogin2(login);
-            if (user is null)
-                throw new AuthenticationException("Пользователь на найден");
+            //User user = _userRepository.GetByLogin2(model.userName);
 
-            
-            
-            //user.existUser = exist;
-            var claims = new List<Claim>()
+            bool exist = _userRepository.GetByLogin(model.userName);
+
+            if (exist)
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.userName),
-            };
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(
-                claims, 
-                "AppCookie", 
-                ClaimsIdentity.DefaultNameClaimType, 
-                ClaimsIdentity.DefaultRoleClaimType);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal (claimsIdentity));
+                user = _mapper.Map<User>(model);
+                var claims = new List<Claim>()
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.userName),
+                };
+                    ClaimsIdentity claimsIdentity = new ClaimsIdentity(
+                        claims,
+                        "AppCookie",
+                        ClaimsIdentity.DefaultNameClaimType,
+                        ClaimsIdentity.DefaultRoleClaimType);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                return RedirectToAction(nameof(Index));
 
+            }
+            else 
+            { 
+                return View(model); 
+            }
+                        
+            //user.existUser = exist;
 
-            return _mapper.Map<RegisterViewModel>(user);
+            //return _mapper.Map<RegisterViewModel>(user);
 
             //throw new AuthenticationException("Пользователь найден");
             //if (user.password != model.password)

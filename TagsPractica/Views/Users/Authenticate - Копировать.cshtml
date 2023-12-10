@@ -1,0 +1,38 @@
+﻿@model TagsPractica.ViewModels.RegisterViewModel
+@{
+    ViewBag.Title = "Authenticate";
+}
+<div class="text-center">
+    <div>
+        <h3 style="text-align: left">Введите логин и пароль или перейдите на страницу регистрации</h3>
+        @if (Model != null)
+        {
+            if (!Model.existUser)
+            {
+                @await Html.PartialAsync("_NotFound")
+            }
+            else if (!Model.existUser)
+            {
+                @await Html.PartialAsync("_NotFound")
+            }
+        }
+        <form method="post">
+            <br>
+            <table>
+                <tr>
+                    <td>Имя:</td>
+                    <td><input type="text" name="userName" /> </td>
+                </tr>
+                <tr>
+                    <td>Пароль:</td>
+                    <td><input type="password" name="password" /></td>
+                </tr>
+
+            </table>
+            <br>
+            <div class="submit-button">
+                <input type="submit" value="Авторизация" />
+            </div>
+        </form>
+    </div>
+</div>
