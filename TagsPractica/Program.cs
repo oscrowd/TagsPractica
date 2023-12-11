@@ -39,7 +39,7 @@ namespace TagsPractica
                         }
                     };
                 });
-
+           
 
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             var app = builder.Build();

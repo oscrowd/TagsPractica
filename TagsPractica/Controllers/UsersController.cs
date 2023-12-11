@@ -14,6 +14,7 @@ using TagsPractica.DAL.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TagsPractica.Controllers
 {
@@ -31,17 +32,19 @@ namespace TagsPractica.Controllers
         }
 
         // GET: Users
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Index()
         {
-            var user = await _context.Users.ToListAsync();
+             await _context.Users.ToListAsync();
+           
             //var entity =_mapper.Map<RegisterViewModel>(user);
-            if (user == null)
+            if (_context.Users == null)
             {
                 return Problem("Entity set 'DatabaseContext.Users'  is null.");
             }
             else
             {
-                return View();
+                return View(await _context.Users.ToListAsync());
             }
             
                           
@@ -314,6 +317,8 @@ namespace TagsPractica.Controllers
                 var claims = new List<Claim>()
                 {
                     new Claim(ClaimsIdentity.DefaultNameClaimType, user.userName),
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.roleName),
+
                 };
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(
                         claims,

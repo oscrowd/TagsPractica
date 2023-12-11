@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TagsPractica.DAL.Models.User>
+﻿@model IEnumerable<TagsPractica.DAL.Models.Post>
 
 @{
     Layout = null;
@@ -19,13 +19,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.userName)
+                @Html.DisplayNameFor(model => model.title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.email)
+                @Html.DisplayNameFor(model => model.text)
             </th>
             <th></th>
         </tr>
@@ -34,13 +31,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.userName)
+                @Html.DisplayFor(modelItem => item.title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.email)
+                @Html.DisplayFor(modelItem => item.text)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

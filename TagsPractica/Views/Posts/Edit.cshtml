@@ -1,4 +1,4 @@
-﻿@model TagsPractica.DAL.Models.User
+﻿@model TagsPractica.DAL.Models.Post
 
 @{
     Layout = null;
@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<h4>User</h4>
+<h4>Post</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -21,19 +21,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="userName" class="control-label"></label>
-                <input asp-for="userName" class="form-control" />
-                <span asp-validation-for="userName" class="text-danger"></span>
+                <label asp-for="title" class="control-label"></label>
+                <input asp-for="title" class="form-control" />
+                <span asp-validation-for="title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="password" class="control-label"></label>
-                <input asp-for="password" class="form-control" />
-                <span asp-validation-for="password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="email" class="control-label"></label>
-                <input asp-for="email" class="form-control" />
-                <span asp-validation-for="email" class="text-danger"></span>
+                <label asp-for="text" class="control-label"></label>
+                <input asp-for="text" class="form-control" />
+                <span asp-validation-for="text" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
