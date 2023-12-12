@@ -1,4 +1,5 @@
-﻿using TagsPractica.DAL.Models;
+﻿using System.Collections;
+using TagsPractica.DAL.Models;
 
 namespace TagsPractica.DAL.Repositories
 {
@@ -6,6 +7,6 @@ namespace TagsPractica.DAL.Repositories
     {
         Task AddUser(User user);
         bool GetByLogin(string userName);
-        User GetByLogin2(string userName);
+        IEnumerable GetByLogin2(string userName, string password);
     }
 }

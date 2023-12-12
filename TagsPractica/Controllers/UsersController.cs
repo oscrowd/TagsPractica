@@ -15,6 +15,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using NuGet.Protocol.Plugins;
 
 namespace TagsPractica.Controllers
 {
@@ -307,13 +308,16 @@ namespace TagsPractica.Controllers
                 String.IsNullOrEmpty(model.password))
                 throw new ArgumentNullException("Запрос не корректен");
 
-            //User user = _userRepository.GetByLogin2(model.userName);
+            //_userRepository.GetByLogin2(model.userName, model.password);
 
             bool exist = _userRepository.GetByLogin(model.userName);
 
             if (exist)
             {
-                user = _mapper.Map<User>(model);
+                var rr = _context.Users.Where(v => v.userName == model.userName && v.password == model.password);
+                user = rr.FirstOrDefault();
+                
+               
                 var claims = new List<Claim>()
                 {
                     new Claim(ClaimsIdentity.DefaultNameClaimType, user.userName),

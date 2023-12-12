@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Collections;
 using System.ComponentModel;
+
 using TagsPractica.DAL.Models;
 using TagsPractica.ViewModels;
 
@@ -47,18 +49,23 @@ namespace TagsPractica.DAL.Repositories
             return validUser;
         }
 
-        public User GetByLogin2(string login)
+        public List<User> GetByLogin2(string login, string password)
         {
             //var user =_context.Users.FirstOrDefault(v => v.userName == login);
             //User user = new User();
-            //user = _context.Users.Select(v => v.userName == login && v.password == login);
             
-            var model = _context.Users.FirstOrDefaultAsync(m => m.userName == login);
-            var rr = _mapper.Map<User>(model);
+            var rr = _context.Users.Where(v => v.userName == login && v.password == login);
+           
+            //var rr = _mapper.Map<User>(model);
+
             
-            //return _mapper.Map<User>(model);
-            return rr;
+            return rr.ToList(); 
+           
         }
 
+        IEnumerable IUserRepository.GetByLogin2(string userName, string password)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
