@@ -74,17 +74,17 @@ namespace TagsPractica.Controllers
             };
 
             // Добавим в базу
-            await _roleRepository.AddRole(newRole1);
-            await _roleRepository.AddRole(newRole2);
-            await _roleRepository.AddRole(newRole3);
-            await _userRepository.AddUser(newUser);
+            //await _roleRepository.AddRole(newRole1);
+           // await _roleRepository.AddRole(newRole2);
+           // await _roleRepository.AddRole(newRole3);
+            //await _userRepository.AddUser(newUser);
             //await _postRepository.AddPost(DefaultPost);
             //await _postRepository.AddComment(DefaultComment);
             //await _postRepository.AddTag(DefaultTag);
             //await _postRepository.AddPostTag(DefaultPostTag);
 
             // Выведем результат
-            Console.WriteLine($"User with id {newUser.Id}, named {newUser.userName} was successfully added on {newUser.email}");
+           // Console.WriteLine($"User with id {newUser.Id}, named {newUser.userName} was successfully added on {newUser.email}");
 
             return View(model);
         }

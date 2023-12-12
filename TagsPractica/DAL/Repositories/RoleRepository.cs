@@ -35,6 +35,27 @@ namespace TagsPractica.DAL.Repositories
             return _roles;
         }
 
+        public string GetById(int id)
+        {
+            //var user =_context.Users.FirstOrDefault(v => v.userName == login);
+            //User user = new User();
+            Role role = new Role();
+            var r = _context.Roles.Where(v => v.Id == id);
+            role = r.FirstOrDefault();
+            if (role == null)
+            {
+                return "";
+            }
+            else
+            {
+                return role.roleName;
+            }
+            //var rr = _mapper.Map<User>(model);
+
+
+
+
+        }
 
     }
 }

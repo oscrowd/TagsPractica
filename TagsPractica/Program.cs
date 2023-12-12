@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TagsPractica.DAL;
 using TagsPractica.DAL.Repositories;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 
 namespace TagsPractica
 {

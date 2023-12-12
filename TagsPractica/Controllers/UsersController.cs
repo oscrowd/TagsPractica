@@ -24,15 +24,18 @@ namespace TagsPractica.Controllers
         private IMapper _mapper;
         private readonly DatabaseContext _context;
         private IUserRepository _userRepository;
+        private IRoleRepository _roleRepository;
 
-        public UsersController(IMapper mapper, DatabaseContext context, IUserRepository userRepository)
+        public UsersController(IMapper mapper, DatabaseContext context, IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _context = context;
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
             _mapper = mapper;
         }
 
         // GET: Users
+        [HttpGet]
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Index()
         {
@@ -308,14 +311,16 @@ namespace TagsPractica.Controllers
                 String.IsNullOrEmpty(model.password))
                 throw new ArgumentNullException("Запрос не корректен");
 
-            //_userRepository.GetByLogin2(model.userName, model.password);
+            user=_userRepository.GetByLogin2(model.userName, model.password);
 
             bool exist = _userRepository.GetByLogin(model.userName);
 
             if (exist)
             {
-                var rr = _context.Users.Where(v => v.userName == model.userName && v.password == model.password);
-                user = rr.FirstOrDefault();
+                string roleName = _roleRepository.GetById(user.roleId);
+                user.Role.roleName = roleName;
+                //var rr = _context.Users.Where(v => v.userName == model.userName && v.password == model.password);
+                //user = rr.FirstOrDefault();
                 
                
                 var claims = new List<Claim>()
@@ -330,7 +335,10 @@ namespace TagsPractica.Controllers
                         ClaimsIdentity.DefaultNameClaimType,
                         ClaimsIdentity.DefaultRoleClaimType);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                model = _mapper.Map<RegisterViewModel>(user);
+                var userClaims = User.FindAll(ClaimTypes.Role).ToList();
+                return View(model);
 
             }
             else 

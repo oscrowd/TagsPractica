@@ -30,7 +30,7 @@ namespace TagsPractica.DAL.Repositories
             var entry = _context.Entry(user);
             if (entry.State == EntityState.Detached)
                 await _context.Users.AddAsync(user);
-               
+
 
             // Сохранение изенений
             await _context.SaveChangesAsync();
@@ -49,23 +49,27 @@ namespace TagsPractica.DAL.Repositories
             return validUser;
         }
 
-        public List<User> GetByLogin2(string login, string password)
+        public User GetByLogin2(string login, string password)
         {
             //var user =_context.Users.FirstOrDefault(v => v.userName == login);
             //User user = new User();
-            
-            var rr = _context.Users.Where(v => v.userName == login && v.password == login);
-           
+            User user = new User();
+            var u = _context.Users.Where(v => v.userName == login && v.password == login);
+            user = u.FirstOrDefault();
+            if (user == null)
+            {
+                return null;
+            }
+            else
+            {
+                return user;
+            }
             //var rr = _mapper.Map<User>(model);
 
-            
-            return rr.ToList(); 
-           
-        }
 
-        IEnumerable IUserRepository.GetByLogin2(string userName, string password)
-        {
-            throw new NotImplementedException();
+
+
         }
     }
+        
 }
