@@ -65,10 +65,11 @@ namespace TagsPractica.DAL.Repositories
                 return user;
             }
             //var rr = _mapper.Map<User>(model);
-
-
-
-
+        }
+        public async Task GetById(Guid id)
+        {
+                //User user = new User();
+                _context.Users.FindAsync(id);
         }
     }
         

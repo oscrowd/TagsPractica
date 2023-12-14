@@ -36,6 +36,11 @@ namespace TagsPractica.ViewModels
         [DefaultValue(false)]
         public bool existUser { get; set; }
 
+        [Required]
+        [Display(Name = "Id")]
+        public string? Id { get; set; }
+
+
 
         //https://mahedee.net/uses-of-dropdown-list-and-radio-button-in-asp-net-mvc-application-with-entity-framework/
 

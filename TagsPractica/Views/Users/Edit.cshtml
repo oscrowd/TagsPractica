@@ -1,53 +1,67 @@
-﻿@model TagsPractica.DAL.Models.User
+﻿@model TagsPractica.ViewModels.RegisterViewModel
 
-@{
-    Layout = null;
-}
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
-</head>
-<body>
+<div class="text-center">
+    <div>
+        
+        <h3 style="text-align: left">Редактирование пользователя</h3>
+        <br>
 
-<h4>User</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="userName" class="control-label"></label>
-                <input asp-for="userName" class="form-control" />
-                <span asp-validation-for="userName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="password" class="control-label"></label>
-                <input asp-for="password" class="form-control" />
-                <span asp-validation-for="password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="email" class="control-label"></label>
-                <input asp-for="email" class="form-control" />
-                <span asp-validation-for="email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+        @if (Model != null)
+        {
+            <form method="patch">
+                    <table>
+                <tr>
+                    <td>Id:</td>
+                    <td><input type="text" name="Id" /> </td>
+                </tr>
+                <tr>
+                    <td>Имя:</td>
+                    <td><input type="text" name="userName" /> </td>
+                </tr>
+                <tr>
+                    <td>Пароль:</td>
+                    <td><input type="password" name="password" /></td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td><input type="text" name="email" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td align="right">
+                        <div class="submit-button" width="300">
+                            <input type="submit" value="Сохранить" width="300" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                </table>
+         
+            </form>
+       }
+       else
+       {
+        <form method="post">
+            <table>
+                <tr>
+                    <td>Id:</td>
+                    <td><input type="text" name="Id" /> </td>
+                </tr>
+                
+                <tr>
+                    <td></td>
+                    <td align="right">
+                        <div class="submit-button" width="300">
+                            <input type="submit" value="Найти" width="300" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+            </table>
+
         </form>
-    </div>
-</div>
+       }
 
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-</body>
-</html>

@@ -104,35 +104,52 @@ namespace TagsPractica.Controllers
         }
 
         // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        [HttpPost]
+        public async Task<IActionResult> Edit(Guid id)
         {
-            if (id == null || _context.Users == null)
-            {
-                return NotFound();
-            }
-
+            //RegisterViewModel model = new RegisterViewModel();  
+            //if (id == null || _context.Users == null)
+            //if (model != null)
+            //{
+            //    return RedirectToAction(nameof(Edit));
+                //return View();
+                //return NotFound();
+            //}
+            //Guid guid;
+            //Guid.TryParse(model.Id, out guid);
+            
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
-            return View(user);
+            RegisterViewModel model = new RegisterViewModel();  
+            model = _mapper.Map<RegisterViewModel>(user);
+            return View(model);
         }
 
         // POST: Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,userName,password,email")] User user)
+        [HttpPatch]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,userName,password,email")] RegisterViewModel model)
         {
-            if (id != user.Id)
+            Guid guid;
+            Guid.TryParse(model.Id, out guid);
+            //User user = new User();
+            var user = _userRepository.GetById(guid);
+            
+
+            if (id != guid)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+
+            //if (ModelState.IsValid)
+            //{
+                //var user = _mapper.Map<User>(model);
                 try
                 {
                     _context.Update(user);
@@ -140,7 +157,7 @@ namespace TagsPractica.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.Id))
+                    if (!UserExists(guid))
                     {
                         return NotFound();
                     }
@@ -150,20 +167,23 @@ namespace TagsPractica.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(user);
+            //}
+            //return View(model);
         }
 
         // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(RegisterViewModel model)
         {
-            if (id == null || _context.Users == null)
+            //if (id == null || _context.Users == null)
+            if (model == null)
             {
                 return NotFound();
             }
 
+            Guid guid;
+            Guid.TryParse(model.Id, out guid);
             var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == guid);
             if (user == null)
             {
                 return NotFound();
