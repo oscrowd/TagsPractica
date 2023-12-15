@@ -103,27 +103,78 @@ namespace TagsPractica.Controllers
             return View();
         }
 
+        // POST: Users/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,userName,password,email")] RegisterViewModel model)
+        {
+            Guid guid;
+            Guid.TryParse(model.Id, out guid);
+            //User user = new User();
+            var us = _userRepository.GetById(guid);
+
+
+            if (id != guid)
+            {
+                return NotFound();
+            }
+            User user = new User();
+            user = _mapper.Map<User>(model);
+
+            //if (ModelState.IsValid)
+            //{
+            //var user = _mapper.Map<User>(model);
+            try
+            {
+                //var temp=_context.Update(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(guid))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+            //}
+            //return View(model);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Find()
+        {
+            return View();
+        }
+
         // GET: Users/Edit/5
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id)
+        public async Task<IActionResult> Find(Guid id)
         {
             //RegisterViewModel model = new RegisterViewModel();  
             //if (id == null || _context.Users == null)
             //if (model != null)
             //{
             //    return RedirectToAction(nameof(Edit));
-                //return View();
-                //return NotFound();
+            //return View();
+            //return NotFound();
             //}
             //Guid guid;
             //Guid.TryParse(model.Id, out guid);
-            
+
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
-            RegisterViewModel model = new RegisterViewModel();  
+            RegisterViewModel model = new RegisterViewModel();
             model = _mapper.Map<RegisterViewModel>(user);
             return View(model);
         }
@@ -133,7 +184,7 @@ namespace TagsPractica.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPatch]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,userName,password,email")] RegisterViewModel model)
+        public async Task<IActionResult> Edit2(Guid id, [Bind("Id,userName,password,email")] RegisterViewModel model)
         {
             Guid guid;
             Guid.TryParse(model.Id, out guid);
@@ -358,7 +409,8 @@ namespace TagsPractica.Controllers
                 //return RedirectToAction(nameof(Index));
                 model = _mapper.Map<RegisterViewModel>(user);
                 var userClaims = User.FindAll(ClaimTypes.Role).ToList();
-                return View(model);
+                //return View(model);
+                return RedirectToAction(nameof(Edit));
 
             }
             else 

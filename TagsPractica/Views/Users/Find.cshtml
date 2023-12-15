@@ -8,8 +8,9 @@
         <h3 style="text-align: left">Редактирование пользователя</h3>
         <br>
 
-        
-            <form method="post">
+        @if (Model != null)
+        {
+            <form method="patch">
                     <table>
                 <tr>
                     <td>Id:</td>
@@ -38,7 +39,30 @@
                 <tr>
                 </table>
          
+            </form>
+            
+       }
+       else
+       {
+        <form method="post">
+            <table>
+                <tr>
+                    <td>Id:</td>
+                    <td><input type="text" name="Id" /> </td>
+                </tr>
+                
+                <tr>
+                    <td></td>
+                    <td align="right">
+                        <div class="submit-button" width="300">
+                            <input type="submit" value="Найти" width="300" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+            </table>
+
         </form>
        }
-</div>
+     </div>
 </div>
