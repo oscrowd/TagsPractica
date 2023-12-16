@@ -111,7 +111,8 @@ namespace TagsPractica.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,userName,password,email")]  EditViewModel model)
+       // public async Task<IActionResult> Edit(Guid id, [Bind("Id,userName,password,email")]  EditViewModel model)
+        public async Task<IActionResult> Edit(Guid id, EditViewModel model)
         {
             Guid guid;
             string mess;
@@ -212,13 +213,14 @@ namespace TagsPractica.Controllers
             //Guid guid;
             //Guid.TryParse(model.Id, out guid);
 
-            var user = await _context.Users.FindAsync(id);
+            //var user = await _context.Users.FindAsync(id);
+            var user = await _userRepository.GetById(id);
             if (user == null)
             {
                 return NotFound();
             }
-            RegisterViewModel model = new RegisterViewModel();
-            model = _mapper.Map<RegisterViewModel>(user);
+            ViewViewModel model = new ViewViewModel();
+            model = _mapper.Map<ViewViewModel>(user);
             return View(model);
         }
 
@@ -503,17 +505,21 @@ namespace TagsPractica.Controllers
         //[Authorize(Roles ="Admin")]
         public async Task<IActionResult> Users()
         {
-            await _context.Users.ToListAsync();
-
+            var ListU = await _context.Users.ToListAsync();
+            var UsersList = _userRepository.FindUsers();
             //var entity =_mapper.Map<RegisterViewModel>(user);
-            if (_context.Users == null)
+            if (ListU == null)
             {
-                return Problem("Entity set 'DatabaseContext.Users'  is null.");
+                ViewData["Message"] = "Entity set 'DatabaseContext.Users'  is null.";
+                return View();
+                //   return Problem("Entity set 'DatabaseContext.Users'  is null.");
             }
             else
             {
-                return View(await _context.Users.ToListAsync());
+                return View(ListU);
             }
+                //return View(UsersList); 
+            //
         }
       
 

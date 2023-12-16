@@ -7,21 +7,11 @@ using TagsPractica.DAL.Models;
 
 namespace TagsPractica.ViewModels
 {
-    public class EditViewModel
+    public class ViewViewModel
     {
         //[Required(ErrorMessage = "Поле Имя обязательно для заполнения")]
         [Display(Name = "Имя")]
         public string? userName { get; set; }
-
-        //[Required]
-        [Display(Name = "Пароль")]
-        public string? password { get; set; }
-
-        //[Required(ErrorMessage = "Обязательно подтвердите пароль")]
-        [Compare("password", ErrorMessage = "Пароли не совпадают")]
-        [DataType(DataType.Password)]
-        [Display(Name = "Подтвердить пароль", Prompt = "**********")]
-        public string? passwordConfirm { get; set; }
 
         //[Required]
         [Display(Name = "Email")]

@@ -98,6 +98,12 @@ namespace TagsPractica.DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<User>> FindUsers()
+        {
+            return await _context.Users.ToListAsync();
+            //return await _context.Users.ToListAsync;
+        }
+
 
     }
         

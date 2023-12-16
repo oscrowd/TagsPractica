@@ -22,6 +22,8 @@ namespace TagsPractica
             CreateMap<User, RegisterViewModel > ();
             CreateMap<AuthViewModel, User>();
             CreateMap<User, AuthViewModel>();
+            CreateMap<ViewViewModel, User>();
+            CreateMap<User, ViewViewModel>();
             //CreateMap<User, Model>();
         }
     }

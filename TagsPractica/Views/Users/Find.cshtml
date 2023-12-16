@@ -1,11 +1,11 @@
-﻿@model TagsPractica.ViewModels.RegisterViewModel
+﻿@model TagsPractica.ViewModels.ViewViewModel
 
 
 
 <div class="text-center">
     <div>
         
-        <h3 style="text-align: left">Редактирование пользователя</h3>
+        <h3 style="text-align: left">Поиск пользователя</h3>
         <br>
 
         @if (Model != null)
@@ -14,19 +14,15 @@
                     <table>
                 <tr>
                     <td>Id:</td>
-                    <td><input type="text" name="Id" /> </td>
+                    <td><input type="text" name="Id" value=@Model.Id /> </td>
                 </tr>
                 <tr>
                     <td>Имя:</td>
-                    <td><input type="text" name="userName" /> </td>
-                </tr>
-                <tr>
-                    <td>Пароль:</td>
-                    <td><input type="password" name="password" /></td>
+                    <td><input type="text" name="userName" value=@Model.userName/> </td>
                 </tr>
                 <tr>
                     <td>Email:</td>
-                    <td><input type="text" name="email" /></td>
+                        <td><input type="text" name="email" value=@Model.email /></td>
                 </tr>
                 <tr>
                     <td></td>
