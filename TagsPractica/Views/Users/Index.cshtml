@@ -1,32 +1,21 @@
-﻿@model List<TagsPractica.DAL.Models.User>
+﻿@model TagsPractica.DAL.Models.User
 <div class="text-center">
     <div>
-        <h3 style="text-align: left">Введите логин и пароль или перейдите на страницу регистрации</h3>
+        <h3 style="text-align: left">Управление пользователями системы</h3>
         <br>
 
         <form method="get">
 
             <table>
                 <tr>
-                    <td>Идентификатор</td>
-                    <td>Имя</td>
-                    <td>Дата регистрации</td>
+                    <td></td>
+                    <td><p>@ViewData["Message"]</p></td>
+                    
                 </tr>
-                @foreach (var user in Model)
-                {
-                    <tr>
-                        <td>@user.Id</td>
-                        <td>@user.userName</td>
-                        <td>@user.email</td>
-                        <td>@user.password</td>
-
-                    </tr>
-                }
+                
             </table>
             <br>
-            <div class="submit-button">
-                <input type="submit" value="Авторизация" />
-            </div>
+           
         </form>
     </div>
 </div>

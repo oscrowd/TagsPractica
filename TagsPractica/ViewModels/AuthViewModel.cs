@@ -7,7 +7,7 @@ using TagsPractica.DAL.Models;
 
 namespace TagsPractica.ViewModels
 {
-    public class RegisterViewModel
+    public class AuthViewModel
     {
         [Required(ErrorMessage = "Поле Имя обязательно для заполнения")]
         [Display(Name = "Имя")]
@@ -17,35 +17,8 @@ namespace TagsPractica.ViewModels
         [Display(Name = "Пароль")]
         public string? password { get; set; }
 
-        [Required(ErrorMessage = "Обязательно подтвердите пароль")]
-        [Compare("password", ErrorMessage = "Пароли не совпадают")]
-        [DataType(DataType.Password)]
-        [Display(Name = "Подтвердить пароль", Prompt = "**********")]
-        public string? passwordConfirm { get; set; }
-
-        [Required]
-        [Display(Name = "Email")]
-        public string? email { get; set; }
-
-        //[Required]
-        [Display(Name = "Роль")]
-        public int roleId { get; set; }
+       
         
-        //[ForeignKey("roleId")]
-        //public virtual Role Role { get; set; }
-
-        //[Required]
-        //[Display(Name = "Роль2")]
-        //public IEnumerable<SelectListItem> Roles { get; set; }
-
-        [Display(Name = "existUser")]
-        [DefaultValue(false)]
-        public bool existUser { get; set; }
-
-        //[Required]
-        [Display(Name = "Id")]
-        public string? Id { get; set; }
-
 
 
         //https://mahedee.net/uses-of-dropdown-list-and-radio-button-in-asp-net-mvc-application-with-entity-framework/

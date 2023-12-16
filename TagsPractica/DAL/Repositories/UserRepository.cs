@@ -66,11 +66,39 @@ namespace TagsPractica.DAL.Repositories
             }
             //var rr = _mapper.Map<User>(model);
         }
-        public async Task GetById(Guid id)
+        public async Task<User> GetById (Guid id)
         {
-                //User user = new User();
-                _context.Users.FindAsync(id);
+            //User user = new User();
+            //_context.Users.FindAsync(id);
+            return await _context.Users
+             .Where(u => u.Id == id)
+             .FirstOrDefaultAsync();
         }
+
+        public async Task GetById2(Guid id)
+        {
+            //User user = new User();
+         
+        }
+
+        public async Task UpdateUser(User user, EditViewModel model)
+        {
+            if (!string.IsNullOrEmpty(model.userName))
+                model.userName = user.userName;
+            if (!string.IsNullOrEmpty(model.email))
+                model.email = user.email;
+            if (!string.IsNullOrEmpty(model.password))
+                model.password = user.password;
+            
+
+            var entry = _context.Entry(user);
+            //if (entry.State == EntityState.Detached || entry.State == EntityState.Unchanged)
+            _context.Update(entry);
+
+            await _context.SaveChangesAsync();
+        }
+
+
     }
         
 }

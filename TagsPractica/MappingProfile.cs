@@ -19,9 +19,10 @@ namespace TagsPractica
             //    .ForMember(x => x.Email, opt => opt.MapFrom(c => c.EmailReg))
             //    .ForMember(x => x.UserName, opt => opt.MapFrom(c => c.Login));
             CreateMap<RegisterViewModel, User>();
-                //.ForMember(x => x.Id.ToString, );
             CreateMap<User, RegisterViewModel > ();
-           //CreateMap<User, Model>();
+            CreateMap<AuthViewModel, User>();
+            CreateMap<User, AuthViewModel>();
+            //CreateMap<User, Model>();
         }
     }
 }

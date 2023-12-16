@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using NuGet.Protocol.Plugins;
+using Azure.Core;
 
 namespace TagsPractica.Controllers
 {
@@ -36,22 +37,22 @@ namespace TagsPractica.Controllers
 
         // GET: Users
         [HttpGet]
-        [Authorize(Roles ="Admin")]
-        public async Task<IActionResult> Index()
+        //[Authorize(Roles ="Admin")]
+        public async Task<IActionResult> Index(string message)
         {
-             await _context.Users.ToListAsync();
-           
+            //await _context.Users.ToListAsync();
+
             //var entity =_mapper.Map<RegisterViewModel>(user);
-            if (_context.Users == null)
-            {
-                return Problem("Entity set 'DatabaseContext.Users'  is null.");
-            }
-            else
-            {
-                return View(await _context.Users.ToListAsync());
-            }
-            
-                          
+            //if (_context.Users == null)
+            //{
+            //    return Problem("Entity set 'DatabaseContext.Users'  is null.");
+            //}
+            //else
+            //{
+            //    return View(await _context.Users.ToListAsync());
+            //}
+            ViewData["Message"] = message;
+            return View();            
                           
             
         }
@@ -100,6 +101,8 @@ namespace TagsPractica.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit()
         {
+            ViewBag.roleId = new SelectList(_context.Roles, "Id", "roleName");
+            ViewBag.Categories = _context.Roles.ToList();
             return View();
         }
 
@@ -108,40 +111,80 @@ namespace TagsPractica.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,userName,password,email")] RegisterViewModel model)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,userName,password,email")]  EditViewModel model)
         {
             Guid guid;
+            string mess;
             Guid.TryParse(model.Id, out guid);
             //User user = new User();
-            var us = _userRepository.GetById(guid);
+            var dbUser = _userRepository.GetById(guid);
+            //if (user.Result == null)
+            //{
+            //    ViewData["Message"] = "Такой пользователь не существует. Попробуйте еще раз";
+            //    return View(model);
+            //}
+            //var dbUser = _context.Users
+            // .Where(u => u.Id == id)
+            // .FirstOrDefaultAsync();
 
-
-            if (id != guid)
-            {
-                return NotFound();
-            }
             User user = new User();
-            user = _mapper.Map<User>(model);
+            user = dbUser.Result;
+            if (user != null && ModelState.IsValid)
+            {
+                if (!string.IsNullOrEmpty(model.userName))
+                    user.userName = model.userName;
+                if (!string.IsNullOrEmpty(model.email))
+                    user.email = model.email;
+                if (!string.IsNullOrEmpty(model.password))
+                    user.password = model.password;
+                if (model.roleId > 0)
+                    user.roleId = model.roleId;
+
+                _context.SaveChanges();
+                mess = ($"User, named {user.userName} was successfully updated");
+                return RedirectToAction("Index", new { message = mess });
+            }
+            else
+            {
+                mess = ($"Данные не валидны или не найден пользователь");
+                ViewData["Message"] = mess;
+                ViewBag.roleId = new SelectList(_context.Roles, "Id", "roleName");
+                ViewBag.Categories = _context.Roles.ToList();
+                return View(model);
+            }
+
+            //var userUpdateData = _userRepository.UpdateUser(
+            //    await user, model);
+            //await _context.SaveChangesAsync();
+
+            
+            
+
+
+
+            
+            //User user = new User();
+            //user = _mapper.Map<User>(model);
 
             //if (ModelState.IsValid)
             //{
             //var user = _mapper.Map<User>(model);
-            try
-            {
+            //try
+            //{
                 //var temp=_context.Update(user);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(guid))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!UserExists(guid))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
             return RedirectToAction(nameof(Index));
             //}
             //return View(model);
@@ -184,7 +227,7 @@ namespace TagsPractica.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPatch]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit2(Guid id, [Bind("Id,userName,password,email")] RegisterViewModel model)
+        public async Task<IActionResult> Edit2(Guid id, [Bind("Id,userName,password,email")] EditViewModel model)
         {
             Guid guid;
             Guid.TryParse(model.Id, out guid);
@@ -223,7 +266,7 @@ namespace TagsPractica.Controllers
         }
 
         // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(RegisterViewModel model)
+        public async Task<IActionResult> Delete(EditViewModel model)
         {
             //if (id == null || _context.Users == null)
             if (model == null)
@@ -301,23 +344,37 @@ namespace TagsPractica.Controllers
         [HttpPost]
         public async Task<IActionResult> Register2(RegisterViewModel model)
         {
-            var user = _mapper.Map<User>(model);
-            //var roles = _db.UserProfiles.Include(c => c.UserGroup);.UserProfiles.Include(c => c.UserGroup);
-            //var tempM = new RegisterViewModel();
-            //var roles = _context.Roles.Select(p => new SelectListItem
-            //{
-            //    //Value = p.Id,
-            //    Text = p.roleName
-            //}).ToList();
-            // return View(roles);
-            //https://stackoverflow.com/questions/16814450/how-to-populate-a-textbox-based-on-dropdown-selection-in-mvc
-            //return View(roles.ToList());
-            //user.roleId = tempM.roleId;
-            // Добавим в базу
-            await _userRepository.AddUser(user);
-            // Выведем результат
-            Console.WriteLine($"User with id {user.Id}, named {user.userName} was successfully added on {user.email} and {user.roleId}");
-            return View(model);
+            
+            if (ModelState.IsValid)
+            {
+                var user = _mapper.Map<User>(model);
+                //var roles = _db.UserProfiles.Include(c => c.UserGroup);.UserProfiles.Include(c => c.UserGroup);
+                //var tempM = new RegisterViewModel();
+                //var roles = _context.Roles.Select(p => new SelectListItem
+                //{
+                //    //Value = p.Id,
+                //    Text = p.roleName
+                //}).ToList();
+                // return View(roles);
+                //https://stackoverflow.com/questions/16814450/how-to-populate-a-textbox-based-on-dropdown-selection-in-mvc
+                //return View(roles.ToList());
+                //user.roleId = tempM.roleId;
+                // Добавим в базу
+                await _userRepository.AddUser(user);
+                // Выведем результат
+                string mess = ($"User, named {user.userName} was successfully added");
+                ViewData["Message"] = mess;
+                //return RedirectToAction(nameof(HomeController.Index));
+                return RedirectToAction("Index", new { message = mess });
+
+            }
+            else
+            {
+                ViewData["Message"] = "Регистрация не прошла. Заполнте все поля и правильность паролей";
+                ViewBag.roleId = new SelectList(_context.Roles, "Id", "roleName");
+                ViewBag.Categories = _context.Roles.ToList();
+                return View(model);
+            }
         }
 
 
@@ -330,12 +387,13 @@ namespace TagsPractica.Controllers
 
         [HttpPost]
         //[Route("authenticate")]
-        public IActionResult Authenticate(RegisterViewModel model)
+        public IActionResult Authenticate(AuthViewModel model)
         {
             bool exist;
             if (String.IsNullOrEmpty(model.userName) || String.IsNullOrEmpty(model.password))
             {
                 exist = false;
+
                 return View(model);
             }
             //throw new ArgumentNullException("Запрос не корректен");
@@ -345,7 +403,7 @@ namespace TagsPractica.Controllers
             exist = _userRepository.GetByLogin(model.userName);
 
 
-            model.existUser = exist;
+            //model.existUser = exist;
             if (exist)
             {
                 return RedirectToAction(nameof(HomeController.Index));
@@ -374,50 +432,61 @@ namespace TagsPractica.Controllers
 
         [HttpPost]
         //[Route("authenticate")]
-        public async Task<IActionResult> Authenticate2(RegisterViewModel model)
+        public async Task<IActionResult> Authenticate2(AuthViewModel model)
         {
-
-            User user =new User();
-            if (String.IsNullOrEmpty(model.userName) || 
-                String.IsNullOrEmpty(model.password))
-                throw new ArgumentNullException("Запрос не корректен");
-
-            user=_userRepository.GetByLogin2(model.userName, model.password);
-
-            bool exist = _userRepository.GetByLogin(model.userName);
-
-            if (exist)
+            if (ModelState.IsValid)
             {
-                string roleName = _roleRepository.GetById(user.roleId);
-                user.Role.roleName = roleName;
-                //var rr = _context.Users.Where(v => v.userName == model.userName && v.password == model.password);
-                //user = rr.FirstOrDefault();
-                
-               
-                var claims = new List<Claim>()
-                {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.userName),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.roleName),
+                User user = new User();
+                if (String.IsNullOrEmpty(model.userName) ||
+                String.IsNullOrEmpty(model.password))
+                    throw new ArgumentNullException("Запрос не корректен");
 
-                };
+
+
+                user = _userRepository.GetByLogin2(model.userName, model.password);
+
+                bool exist = _userRepository.GetByLogin(model.userName);
+
+                if (exist)
+                {
+                    string roleName = _roleRepository.GetById(user.roleId);
+                    user.Role.roleName = roleName;
+                    //var rr = _context.Users.Where(v => v.userName == model.userName && v.password == model.password);
+                    //user = rr.FirstOrDefault();
+
+
+                    var claims = new List<Claim>()
+                    {
+                        new Claim(ClaimsIdentity.DefaultNameClaimType, user.userName),
+                        new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.roleName),
+
+                    };
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(
                         claims,
                         "AppCookie",
                         ClaimsIdentity.DefaultNameClaimType,
                         ClaimsIdentity.DefaultRoleClaimType);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                //return RedirectToAction(nameof(Index));
-                model = _mapper.Map<RegisterViewModel>(user);
-                var userClaims = User.FindAll(ClaimTypes.Role).ToList();
-                //return View(model);
-                return RedirectToAction(nameof(Edit));
+                    //return RedirectToAction(nameof(Index));
+                    model = _mapper.Map<AuthViewModel>(user);
+                    var userClaims = User.FindAll(ClaimTypes.Role).ToList();
+                    //return View(model);
+                    //return RedirectToAction(nameof(Edit));
+                    string mess = ($"User, named {user.userName} was successfully authentificated");
+                    return RedirectToAction("Index", new { message = mess });
 
+                }
+                else
+                {
+                    ViewData["Message"] = "Аутентификация не прошла. Введите правильный логин и пароль или зарегестрируйтесь ";
+                    return View(model);
+                }
             }
             else 
-            { 
-                return View(model); 
+            {
+                ViewData["Message"] = "Аутентификация не прошла. Вы не ввели логин или пароль";
+                return View(model);
             }
-                        
             //user.existUser = exist;
 
             //return _mapper.Map<RegisterViewModel>(user);
@@ -428,5 +497,25 @@ namespace TagsPractica.Controllers
             //return _mapper.Map<RegisterViewModel>(user);
 
         }
+
+        // GET: Users
+        [HttpGet]
+        //[Authorize(Roles ="Admin")]
+        public async Task<IActionResult> Users()
+        {
+            await _context.Users.ToListAsync();
+
+            //var entity =_mapper.Map<RegisterViewModel>(user);
+            if (_context.Users == null)
+            {
+                return Problem("Entity set 'DatabaseContext.Users'  is null.");
+            }
+            else
+            {
+                return View(await _context.Users.ToListAsync());
+            }
+        }
+      
+
     }
 }

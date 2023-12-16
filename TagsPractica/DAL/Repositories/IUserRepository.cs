@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using TagsPractica.DAL.Models;
+using TagsPractica.ViewModels;
 
 namespace TagsPractica.DAL.Repositories
 {
@@ -8,6 +9,7 @@ namespace TagsPractica.DAL.Repositories
         Task AddUser(User user);
         bool GetByLogin(string userName);
         User GetByLogin2(string userName, string password);
-        Task GetById(Guid id);
+        public Task<User> GetById(Guid id);
+        public Task UpdateUser(User user, EditViewModel model);
     }
 }

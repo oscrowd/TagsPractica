@@ -1,6 +1,10 @@
-﻿@model TagsPractica.ViewModels.RegisterViewModel
-
-
+﻿@model TagsPractica.ViewModels.EditViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+@{
+    ViewBag.Title = "Edit";
+}
 
 <div class="text-center">
     <div>
@@ -24,14 +28,32 @@
                     <td><input type="password" name="password" /></td>
                 </tr>
                 <tr>
+                    <td>Подтвердите пароль:</td>
+                    <td><input type="password" name="passwordConfirm" /></td>
+                </tr>
+                <tr>
                     <td>Email:</td>
                     <td><input type="text" name="email" /></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.roleId, "Роль", new { @class = "control-label col-md-2" })
+                    </td>
+                    <td class="col-md-10" align="right">
+                        @*@Html.DropDownList("PossibleCountries", String.Empty)*@
+                        @Html.DropDownList("roleId", "Выбрать роль")
+                        @Html.ValidationMessageFor(model => model.roleId)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>  <p>@ViewData["Message"]</p> </td>
                 </tr>
                 <tr>
                     <td></td>
                     <td align="right">
                         <div class="submit-button" width="300">
-                            <input type="submit" value="Сохранить" width="300" />
+                            <input type="submit" value="Сохранить" width="300"/>
                         </div>
                     </td>
                 </tr>
@@ -39,6 +61,6 @@
                 </table>
          
         </form>
-       }
+       
 </div>
 </div>
