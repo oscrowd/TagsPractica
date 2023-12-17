@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using TagsPractica.DAL.Models;
 
 
@@ -15,8 +16,9 @@ namespace TagsPractica.DAL
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
-            //Database.EnsureDeleted();
+            Database.EnsureDeleted();
             Database.EnsureCreated();
+            
         }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
