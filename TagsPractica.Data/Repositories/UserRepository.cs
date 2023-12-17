@@ -5,7 +5,7 @@ using System.Collections;
 using System.ComponentModel;
 
 using TagsPractica.DAL.Models;
-using TagsPractica.ViewModels;
+//using TagsPractica.ViewModels;
 
 namespace TagsPractica.DAL.Repositories
 {
@@ -81,14 +81,14 @@ namespace TagsPractica.DAL.Repositories
          
         }
 
-        public async Task UpdateUser(User user, EditViewModel model)
+        public async Task UpdateUser(User user, object model)
         {
-            if (!string.IsNullOrEmpty(model.userName))
-                model.userName = user.userName;
-            if (!string.IsNullOrEmpty(model.email))
-                model.email = user.email;
-            if (!string.IsNullOrEmpty(model.password))
-                model.password = user.password;
+            //if (!string.IsNullOrEmpty(model.userName))
+           //     model.userName = user.userName;
+            //if (!string.IsNullOrEmpty(model.email))
+           //     model.email = user.email;
+           // if (!string.IsNullOrEmpty(model.password))
+           //     model.password = user.password;
             
 
             var entry = _context.Entry(user);

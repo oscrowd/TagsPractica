@@ -23,9 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="DAL\DB\blog.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\TagsPractica.Data\TagsPractica.Data.csproj" />
   </ItemGroup>
 
 </Project>

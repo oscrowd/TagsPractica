@@ -20,13 +20,7 @@ namespace TagsPractica.DAL
             Database.EnsureCreated();
             
         }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //optionsBuilder.UseSqlite("Filename=blog.db");
-
-
-        //}
-    }
+       }
 }
 //https://professorweb.ru/my/entity-framework/6/level2/2_2.php?ysclid=lpk3pd88dq77284330
 //https://metanit.com/sharp/efcore/3.1.php?ysclid=lpk3p14y1o495881828

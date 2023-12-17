@@ -40,17 +40,6 @@ namespace TagsPractica.Controllers
         //[Authorize(Roles ="Admin")]
         public async Task<IActionResult> Index(string message)
         {
-            //await _context.Users.ToListAsync();
-
-            //var entity =_mapper.Map<RegisterViewModel>(user);
-            //if (_context.Users == null)
-            //{
-            //    return Problem("Entity set 'DatabaseContext.Users'  is null.");
-            //}
-            //else
-            //{
-            //    return View(await _context.Users.ToListAsync());
-            //}
             ViewData["Message"] = message;
             return View();            
                           
@@ -111,23 +100,13 @@ namespace TagsPractica.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-       // public async Task<IActionResult> Edit(Guid id, [Bind("Id,userName,password,email")]  EditViewModel model)
         public async Task<IActionResult> Edit(Guid id, EditViewModel model)
         {
             Guid guid;
             string mess;
             Guid.TryParse(model.Id, out guid);
-            //User user = new User();
             var dbUser = _userRepository.GetById(guid);
-            //if (user.Result == null)
-            //{
-            //    ViewData["Message"] = "Такой пользователь не существует. Попробуйте еще раз";
-            //    return View(model);
-            //}
-            //var dbUser = _context.Users
-            // .Where(u => u.Id == id)
-            // .FirstOrDefaultAsync();
-
+            
             User user = new User();
             user = dbUser.Result;
             if (user != null && ModelState.IsValid)
@@ -153,42 +132,6 @@ namespace TagsPractica.Controllers
                 ViewBag.Categories = _context.Roles.ToList();
                 return View(model);
             }
-
-            //var userUpdateData = _userRepository.UpdateUser(
-            //    await user, model);
-            //await _context.SaveChangesAsync();
-
-            
-            
-
-
-
-            
-            //User user = new User();
-            //user = _mapper.Map<User>(model);
-
-            //if (ModelState.IsValid)
-            //{
-            //var user = _mapper.Map<User>(model);
-            //try
-            //{
-                //var temp=_context.Update(user);
-            //    await _context.SaveChangesAsync();
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //    if (!UserExists(guid))
-            //    {
-            //        return NotFound();
-            //    }
-            //    else
-            //    {
-            //        throw;
-            //    }
-            //}
-            return RedirectToAction(nameof(Index));
-            //}
-            //return View(model);
         }
 
 
@@ -202,18 +145,6 @@ namespace TagsPractica.Controllers
         [HttpPost]
         public async Task<IActionResult> Find(Guid id)
         {
-            //RegisterViewModel model = new RegisterViewModel();  
-            //if (id == null || _context.Users == null)
-            //if (model != null)
-            //{
-            //    return RedirectToAction(nameof(Edit));
-            //return View();
-            //return NotFound();
-            //}
-            //Guid guid;
-            //Guid.TryParse(model.Id, out guid);
-
-            //var user = await _context.Users.FindAsync(id);
             var user = await _userRepository.GetById(id);
             if (user == null)
             {
@@ -233,7 +164,6 @@ namespace TagsPractica.Controllers
         {
             Guid guid;
             Guid.TryParse(model.Id, out guid);
-            //User user = new User();
             var user = _userRepository.GetById(guid);
             
 
@@ -241,37 +171,29 @@ namespace TagsPractica.Controllers
             {
                 return NotFound();
             }
-
-
-            //if (ModelState.IsValid)
-            //{
-                //var user = _mapper.Map<User>(model);
-                try
+            try
+            {
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(guid))
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!UserExists(guid))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
-            //}
-            //return View(model);
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(EditViewModel model)
         {
-            //if (id == null || _context.Users == null)
-            if (model == null)
+           if (model == null)
             {
                 return NotFound();
             }
@@ -350,23 +272,10 @@ namespace TagsPractica.Controllers
             if (ModelState.IsValid)
             {
                 var user = _mapper.Map<User>(model);
-                //var roles = _db.UserProfiles.Include(c => c.UserGroup);.UserProfiles.Include(c => c.UserGroup);
-                //var tempM = new RegisterViewModel();
-                //var roles = _context.Roles.Select(p => new SelectListItem
-                //{
-                //    //Value = p.Id,
-                //    Text = p.roleName
-                //}).ToList();
-                // return View(roles);
-                //https://stackoverflow.com/questions/16814450/how-to-populate-a-textbox-based-on-dropdown-selection-in-mvc
-                //return View(roles.ToList());
-                //user.roleId = tempM.roleId;
-                // Добавим в базу
                 await _userRepository.AddUser(user);
                 // Выведем результат
                 string mess = ($"User, named {user.userName} was successfully added");
                 ViewData["Message"] = mess;
-                //return RedirectToAction(nameof(HomeController.Index));
                 return RedirectToAction("Index", new { message = mess });
 
             }
@@ -398,30 +307,17 @@ namespace TagsPractica.Controllers
 
                 return View(model);
             }
-            //throw new ArgumentNullException("Запрос не корректен");
-            //User user = _userRepository.GetByLogin(model);
-            //exist = this.UserExistsName(model.userName);
-
             exist = _userRepository.GetByLogin(model.userName);
 
 
-            //model.existUser = exist;
             if (exist)
             {
                 return RedirectToAction(nameof(HomeController.Index));
-                //return RedirectToAction<HomeController>(m => m.LogIn());
             }
             else
             {
                 return View(model);
             }
-
-
-
-            //throw new AuthenticationException("Пользователь найден");
-            //if (user.password != model.password)
-            //    throw new AuthenticationException("Введенный пароль не корректен");
-            //return _mapper.Map<RegisterViewModel>(user);
 
         }
 
@@ -453,10 +349,6 @@ namespace TagsPractica.Controllers
                 {
                     string roleName = _roleRepository.GetById(user.roleId);
                     user.Role.roleName = roleName;
-                    //var rr = _context.Users.Where(v => v.userName == model.userName && v.password == model.password);
-                    //user = rr.FirstOrDefault();
-
-
                     var claims = new List<Claim>()
                     {
                         new Claim(ClaimsIdentity.DefaultNameClaimType, user.userName),
@@ -469,11 +361,8 @@ namespace TagsPractica.Controllers
                         ClaimsIdentity.DefaultNameClaimType,
                         ClaimsIdentity.DefaultRoleClaimType);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                    //return RedirectToAction(nameof(Index));
                     model = _mapper.Map<AuthViewModel>(user);
                     var userClaims = User.FindAll(ClaimTypes.Role).ToList();
-                    //return View(model);
-                    //return RedirectToAction(nameof(Edit));
                     string mess = ($"User, named {user.userName} was successfully authentificated");
                     return RedirectToAction("Index", new { message = mess });
 
@@ -489,15 +378,6 @@ namespace TagsPractica.Controllers
                 ViewData["Message"] = "Аутентификация не прошла. Вы не ввели логин или пароль";
                 return View(model);
             }
-            //user.existUser = exist;
-
-            //return _mapper.Map<RegisterViewModel>(user);
-
-            //throw new AuthenticationException("Пользователь найден");
-            //if (user.password != model.password)
-            //    throw new AuthenticationException("Введенный пароль не корректен");
-            //return _mapper.Map<RegisterViewModel>(user);
-
         }
 
         // GET: Users
@@ -507,19 +387,15 @@ namespace TagsPractica.Controllers
         {
             var ListU = await _context.Users.ToListAsync();
             var UsersList = _userRepository.FindUsers();
-            //var entity =_mapper.Map<RegisterViewModel>(user);
             if (ListU == null)
             {
                 ViewData["Message"] = "Entity set 'DatabaseContext.Users'  is null.";
                 return View();
-                //   return Problem("Entity set 'DatabaseContext.Users'  is null.");
             }
             else
             {
                 return View(ListU);
             }
-                //return View(UsersList); 
-            //
         }
       
 
