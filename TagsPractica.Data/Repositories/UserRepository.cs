@@ -5,7 +5,7 @@ using System.Collections;
 using System.ComponentModel;
 
 using TagsPractica.DAL.Models;
-using TagsPractica.ViewModels;
+//using TagsPractica.ViewModels;
 
 namespace TagsPractica.DAL.Repositories
 {
@@ -65,11 +65,46 @@ namespace TagsPractica.DAL.Repositories
                 return user;
             }
             //var rr = _mapper.Map<User>(model);
-
-
-
-
         }
+        public async Task<User> GetById (Guid id)
+        {
+            //User user = new User();
+            //_context.Users.FindAsync(id);
+            return await _context.Users
+             .Where(u => u.Id == id)
+             .FirstOrDefaultAsync();
+        }
+
+        public async Task GetById2(Guid id)
+        {
+            //User user = new User();
+         
+        }
+
+        public async Task UpdateUser(User user, object model)
+        {
+            //if (!string.IsNullOrEmpty(model.userName))
+           //     model.userName = user.userName;
+            //if (!string.IsNullOrEmpty(model.email))
+           //     model.email = user.email;
+           // if (!string.IsNullOrEmpty(model.password))
+           //     model.password = user.password;
+            
+
+            var entry = _context.Entry(user);
+            //if (entry.State == EntityState.Detached || entry.State == EntityState.Unchanged)
+            _context.Update(entry);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<User>> FindUsers()
+        {
+            return await _context.Users.ToListAsync();
+            //return await _context.Users.ToListAsync;
+        }
+
+
     }
         
 }

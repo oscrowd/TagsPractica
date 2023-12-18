@@ -1,4 +1,6 @@
-﻿namespace TagsPractica.DAL.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace TagsPractica.DAL.Models
 
 
 
@@ -11,6 +13,7 @@
         public string? password { get; set; }
         public string? email { get; set; }
 
+       
         public int roleId { get; set; }
         public Role Role { get; set; }
 

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using NuGet.Protocol.Plugins;
+using Azure.Core;
 
 namespace TagsPractica.Controllers
 {
@@ -36,22 +37,11 @@ namespace TagsPractica.Controllers
 
         // GET: Users
         [HttpGet]
-        [Authorize(Roles ="Admin")]
-        public async Task<IActionResult> Index()
+        //[Authorize(Roles ="Admin")]
+        public async Task<IActionResult> Index(string message)
         {
-             await _context.Users.ToListAsync();
-           
-            //var entity =_mapper.Map<RegisterViewModel>(user);
-            if (_context.Users == null)
-            {
-                return Problem("Entity set 'DatabaseContext.Users'  is null.");
-            }
-            else
-            {
-                return View(await _context.Users.ToListAsync());
-            }
-            
-                          
+            ViewData["Message"] = message;
+            return View();            
                           
             
         }
@@ -97,73 +87,122 @@ namespace TagsPractica.Controllers
             return View(user);
         }
 
+        
         [HttpGet]
         public async Task<IActionResult> Edit()
         {
+            ViewBag.roleId = new SelectList(_context.Roles, "Id", "roleName");
+            ViewBag.Categories = _context.Roles.ToList();
             return View();
-        }
-
-        // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null || _context.Users == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return View(user);
         }
 
         // POST: Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,userName,password,email")] User user)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, EditViewModel model)
         {
-            if (id != user.Id)
+            Guid guid;
+            string mess;
+            Guid.TryParse(model.Id, out guid);
+            var dbUser = _userRepository.GetById(guid);
+            
+            User user = new User();
+            user = dbUser.Result;
+            if (user != null && ModelState.IsValid)
+            {
+                if (!string.IsNullOrEmpty(model.userName))
+                    user.userName = model.userName;
+                if (!string.IsNullOrEmpty(model.email))
+                    user.email = model.email;
+                if (!string.IsNullOrEmpty(model.password))
+                    user.password = model.password;
+                if (model.roleId > 0)
+                    user.roleId = model.roleId;
+
+                _context.SaveChanges();
+                mess = ($"User, named {user.userName} was successfully updated");
+                return RedirectToAction("Index", new { message = mess });
+            }
+            else
+            {
+                mess = ($"Данные не валидны или не найден пользователь");
+                ViewData["Message"] = mess;
+                ViewBag.roleId = new SelectList(_context.Roles, "Id", "roleName");
+                ViewBag.Categories = _context.Roles.ToList();
+                return View(model);
+            }
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Find()
+        {
+            return View();
+        }
+
+        // GET: Users/Edit/5
+        [HttpPost]
+        public async Task<IActionResult> Find(Guid id)
+        {
+            var user = await _userRepository.GetById(id);
+            if (user == null)
             {
                 return NotFound();
             }
+            ViewViewModel model = new ViewViewModel();
+            model = _mapper.Map<ViewViewModel>(user);
+            return View(model);
+        }
 
-            if (ModelState.IsValid)
+        // POST: Users/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPatch]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit2(Guid id, [Bind("Id,userName,password,email")] EditViewModel model)
+        {
+            Guid guid;
+            Guid.TryParse(model.Id, out guid);
+            var user = _userRepository.GetById(guid);
+            
+
+            if (id != guid)
             {
-                try
-                {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserExists(user.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return View(user);
+            try
+            {
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(guid))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(EditViewModel model)
         {
-            if (id == null || _context.Users == null)
+           if (model == null)
             {
                 return NotFound();
             }
 
+            Guid guid;
+            Guid.TryParse(model.Id, out guid);
             var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id == guid);
             if (user == null)
             {
                 return NotFound();
@@ -230,23 +269,24 @@ namespace TagsPractica.Controllers
         [HttpPost]
         public async Task<IActionResult> Register2(RegisterViewModel model)
         {
-            var user = _mapper.Map<User>(model);
-            //var roles = _db.UserProfiles.Include(c => c.UserGroup);.UserProfiles.Include(c => c.UserGroup);
-            //var tempM = new RegisterViewModel();
-            //var roles = _context.Roles.Select(p => new SelectListItem
-            //{
-            //    //Value = p.Id,
-            //    Text = p.roleName
-            //}).ToList();
-            // return View(roles);
-            //https://stackoverflow.com/questions/16814450/how-to-populate-a-textbox-based-on-dropdown-selection-in-mvc
-            //return View(roles.ToList());
-            //user.roleId = tempM.roleId;
-            // Добавим в базу
-            await _userRepository.AddUser(user);
-            // Выведем результат
-            Console.WriteLine($"User with id {user.Id}, named {user.userName} was successfully added on {user.email} and {user.roleId}");
-            return View(model);
+            
+            if (ModelState.IsValid)
+            {
+                var user = _mapper.Map<User>(model);
+                await _userRepository.AddUser(user);
+                // Выведем результат
+                string mess = ($"User, named {user.userName} was successfully added");
+                ViewData["Message"] = mess;
+                return RedirectToAction("Index", new { message = mess });
+
+            }
+            else
+            {
+                ViewData["Message"] = "Регистрация не прошла. Заполнте все поля и правильность паролей";
+                ViewBag.roleId = new SelectList(_context.Roles, "Id", "roleName");
+                ViewBag.Categories = _context.Roles.ToList();
+                return View(model);
+            }
         }
 
 
@@ -259,38 +299,26 @@ namespace TagsPractica.Controllers
 
         [HttpPost]
         //[Route("authenticate")]
-        public IActionResult Authenticate(RegisterViewModel model)
+        public IActionResult Authenticate(AuthViewModel model)
         {
             bool exist;
             if (String.IsNullOrEmpty(model.userName) || String.IsNullOrEmpty(model.password))
             {
                 exist = false;
+
                 return View(model);
             }
-            //throw new ArgumentNullException("Запрос не корректен");
-            //User user = _userRepository.GetByLogin(model);
-            //exist = this.UserExistsName(model.userName);
-
             exist = _userRepository.GetByLogin(model.userName);
 
 
-            model.existUser = exist;
             if (exist)
             {
                 return RedirectToAction(nameof(HomeController.Index));
-                //return RedirectToAction<HomeController>(m => m.LogIn());
             }
             else
             {
                 return View(model);
             }
-
-
-
-            //throw new AuthenticationException("Пользователь найден");
-            //if (user.password != model.password)
-            //    throw new AuthenticationException("Введенный пароль не корректен");
-            //return _mapper.Map<RegisterViewModel>(user);
 
         }
 
@@ -303,58 +331,75 @@ namespace TagsPractica.Controllers
 
         [HttpPost]
         //[Route("authenticate")]
-        public async Task<IActionResult> Authenticate2(RegisterViewModel model)
+        public async Task<IActionResult> Authenticate2(AuthViewModel model)
         {
-
-            User user =new User();
-            if (String.IsNullOrEmpty(model.userName) || 
-                String.IsNullOrEmpty(model.password))
-                throw new ArgumentNullException("Запрос не корректен");
-
-            user=_userRepository.GetByLogin2(model.userName, model.password);
-
-            bool exist = _userRepository.GetByLogin(model.userName);
-
-            if (exist)
+            if (ModelState.IsValid)
             {
-                string roleName = _roleRepository.GetById(user.roleId);
-                user.Role.roleName = roleName;
-                //var rr = _context.Users.Where(v => v.userName == model.userName && v.password == model.password);
-                //user = rr.FirstOrDefault();
-                
-               
-                var claims = new List<Claim>()
-                {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.userName),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.roleName),
+                User user = new User();
+                if (String.IsNullOrEmpty(model.userName) ||
+                String.IsNullOrEmpty(model.password))
+                    throw new ArgumentNullException("Запрос не корректен");
 
-                };
+
+
+                user = _userRepository.GetByLogin2(model.userName, model.password);
+
+                bool exist = _userRepository.GetByLogin(model.userName);
+
+                if (exist)
+                {
+                    string roleName = _roleRepository.GetById(user.roleId);
+                    user.Role.roleName = roleName;
+                    var claims = new List<Claim>()
+                    {
+                        new Claim(ClaimsIdentity.DefaultNameClaimType, user.userName),
+                        new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.roleName),
+
+                    };
                     ClaimsIdentity claimsIdentity = new ClaimsIdentity(
                         claims,
                         "AppCookie",
                         ClaimsIdentity.DefaultNameClaimType,
                         ClaimsIdentity.DefaultRoleClaimType);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                //return RedirectToAction(nameof(Index));
-                model = _mapper.Map<RegisterViewModel>(user);
-                var userClaims = User.FindAll(ClaimTypes.Role).ToList();
-                return View(model);
+                    model = _mapper.Map<AuthViewModel>(user);
+                    var userClaims = User.FindAll(ClaimTypes.Role).ToList();
+                    string mess = ($"User, named {user.userName} was successfully authentificated");
+                    return RedirectToAction("Index", new { message = mess });
 
+                }
+                else
+                {
+                    ViewData["Message"] = "Аутентификация не прошла. Введите правильный логин и пароль или зарегестрируйтесь ";
+                    return View(model);
+                }
             }
             else 
-            { 
-                return View(model); 
+            {
+                ViewData["Message"] = "Аутентификация не прошла. Вы не ввели логин или пароль";
+                return View(model);
             }
-                        
-            //user.existUser = exist;
-
-            //return _mapper.Map<RegisterViewModel>(user);
-
-            //throw new AuthenticationException("Пользователь найден");
-            //if (user.password != model.password)
-            //    throw new AuthenticationException("Введенный пароль не корректен");
-            //return _mapper.Map<RegisterViewModel>(user);
-
         }
+
+        // GET: Users
+        [HttpGet]
+        [Authorize (Roles = "Admin")]
+        //[Authorize(Roles ="Admin")]
+        public async Task<IActionResult> Users()
+        {
+            var ListU = await _context.Users.ToListAsync();
+            var UsersList = _userRepository.FindUsers();
+            if (ListU == null)
+            {
+                ViewData["Message"] = "Entity set 'DatabaseContext.Users'  is null.";
+                return View();
+            }
+            else
+            {
+                return View(ListU);
+            }
+        }
+      
+
     }
 }

@@ -7,23 +7,13 @@ using TagsPractica.DAL.Models;
 
 namespace TagsPractica.ViewModels
 {
-    public class RegisterViewModel
+    public class ViewViewModel
     {
-        [Required(ErrorMessage = "Поле Имя обязательно для заполнения")]
+        //[Required(ErrorMessage = "Поле Имя обязательно для заполнения")]
         [Display(Name = "Имя")]
         public string? userName { get; set; }
 
-        [Required]
-        [Display(Name = "Пароль")]
-        public string? password { get; set; }
-
-        [Required(ErrorMessage = "Обязательно подтвердите пароль")]
-        [Compare("password", ErrorMessage = "Пароли не совпадают")]
-        [DataType(DataType.Password)]
-        [Display(Name = "Подтвердить пароль", Prompt = "**********")]
-        public string? passwordConfirm { get; set; }
-
-        [Required]
+        //[Required]
         [Display(Name = "Email")]
         public string? email { get; set; }
 
@@ -31,16 +21,10 @@ namespace TagsPractica.ViewModels
         [Display(Name = "Роль")]
         public int roleId { get; set; }
         
-        //[ForeignKey("roleId")]
-        //public virtual Role Role { get; set; }
-
-        //[Required]
-        //[Display(Name = "Роль2")]
-        //public IEnumerable<SelectListItem> Roles { get; set; }
-
-        [Display(Name = "existUser")]
-        [DefaultValue(false)]
-        public bool existUser { get; set; }
+       
+        //[Display(Name = "existUser")]
+        //[DefaultValue(false)]
+        //public bool existUser { get; set; }
 
         //[Required]
         [Display(Name = "Id")]

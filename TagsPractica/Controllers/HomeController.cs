@@ -25,19 +25,8 @@ namespace TagsPractica.Controllers
 
         public async Task<IActionResult> Index(RegisterViewModel model)
         {
-            // Добавим создание нового пользователя
-            var newUser = new User()
-            {
-                Id = Guid.NewGuid(),
-                userName = "Andrey",
-                password = "Petrov",
-                email = "1@1.ru",
-                roleId = 3
-                
-                // = DateTime.Now
-            };
-
-            var newRole1 = new Role()
+            // Добавим данные в БД
+           var newRole1 = new Role()
             {
                 roleName = "Admin"
             };
@@ -49,14 +38,39 @@ namespace TagsPractica.Controllers
             {
                 roleName = "User"
             };
+            var newUser1 = new User()
+            {
+                Id = Guid.NewGuid(),
+                userName = "Andrey",
+                password = "Petrov",
+                email = "1@1.ru",
+                roleId = 1
+            };
+            var newUser2 = new User()
+            {
+                Id = Guid.NewGuid(),
+                userName = "Ivan",
+                password = "Ivanov",
+                email = "2@2.ru",
+                roleId = 2
+            };
+            var newUser3 = new User()
+            {
+                Id = Guid.NewGuid(),
+                userName = "Andrey",
+                password = "Petrov",
+                email = "2@2.ru",
+                roleId = 3
+            };
 
+            string userIdString = new Guid(newUser3.Id.ToString()).ToString();
             var DefaultPost = new Post()
             {
                 title = "default",
                 text = "dafault",
-                //userId =  ConewUser.Id,
-
-            };
+                userId =  userIdString,
+                
+        };
             var DefaultComment = new Comment()
             {
                 text = "dafault",
@@ -74,11 +88,13 @@ namespace TagsPractica.Controllers
             };
 
             // Добавим в базу
-            //await _roleRepository.AddRole(newRole1);
-           // await _roleRepository.AddRole(newRole2);
-           // await _roleRepository.AddRole(newRole3);
-            //await _userRepository.AddUser(newUser);
-            //await _postRepository.AddPost(DefaultPost);
+            await _roleRepository.AddRole(newRole1);
+            await _roleRepository.AddRole(newRole2);
+            await _roleRepository.AddRole(newRole3);
+            await _userRepository.AddUser(newUser1);
+            await _userRepository.AddUser(newUser2);
+            await _userRepository.AddUser(newUser3);
+            await _postRepository.AddPost(DefaultPost);
             //await _postRepository.AddComment(DefaultComment);
             //await _postRepository.AddTag(DefaultTag);
             //await _postRepository.AddPostTag(DefaultPostTag);

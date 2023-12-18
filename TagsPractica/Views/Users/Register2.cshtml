@@ -2,10 +2,12 @@
 @{
     ViewBag.Title = "Register2";
 }
+@{
+    ViewData["Title"] = "Register2";
+}
 <div class="text-center">
     <div>
-        @if (Model == null)
-        {
+       
             <h3 style="text-align: left">Добро пожаловать в наш блог!</h3>
             <br>
 
@@ -20,6 +22,10 @@
                         <td><input type="password" name="password" /></td>
                     </tr>
                     <tr>
+                        <td>Подтвердите пароль:</td>
+                        <td><input type="password" name="passwordConfirm" /></td>
+                    </tr>
+                    <tr>
                         <td>Email:</td>
                         <td><input type="text" name="email" /></td>
                     </tr>
@@ -31,16 +37,9 @@
                             @*@Html.DropDownList("PossibleCountries", String.Empty)*@
                             @Html.DropDownList("roleId", "Выбрать роль")
                             @Html.ValidationMessageFor(model => model.roleId)
-                        </td>>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td align="right">
-                        <div class="submit-button" width="300">
-                        <input type="submit" value="Войти" width="300" />
-                        </div>
                         </td>
                     </tr>
+                    
                     <tr>
                         <td></td>
                         <td align="right">
@@ -49,13 +48,18 @@
                         </div>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+
+                        </td>
+                        <td>
+                            <p>@ViewData["Message"]</p>
+                        </td>
+                    </tr>
                 </table>
             </form>
             
-        }
-        else
-        {
-            @await Html.PartialAsync("_Thanks")
-        }
+       
+      
     </div>
 </div>
