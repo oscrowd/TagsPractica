@@ -87,6 +87,7 @@ namespace TagsPractica.Controllers
             return View(user);
         }
 
+        
         [HttpGet]
         public async Task<IActionResult> Edit()
         {
@@ -382,6 +383,7 @@ namespace TagsPractica.Controllers
 
         // GET: Users
         [HttpGet]
+        [Authorize (Roles = "Admin")]
         //[Authorize(Roles ="Admin")]
         public async Task<IActionResult> Users()
         {
