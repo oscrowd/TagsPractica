@@ -1,31 +1,28 @@
 ﻿@model List<TagsPractica.DAL.Models.User>
-<div class="text-center">
-    <div>
-        <h3 style="text-align: left">Список пользователей</h3>
-        <br>
 
-        <form method="get">
-
-            <table>
-                <tr>
-                    <td>Идентификатор</td>
-                    <td>Имя пользователя</td>
-                    <td>Email</td>
-                </tr>
-                @foreach (var user in Model)
-                {
-                    <tr>
-                        <td>@user.Id</td>
-                        <td>@user.userName</td>
-                        <td>@user.email</td>
-
-
-
-                    </tr>
-                }
-            </table>
-           
-            
-        </form>
-    </div>
+<div class="table-responsive">
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>View</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.Id</td>
+                <td>@student.userName</td>
+                <td class="text-center"><a href="#" class="btn btn-primary" >View</a></td>
+                <td class="text-center"><a href="#" class="btn btn-primary">Edit</a></td>
+                <td class="text-center"><a href="#" class="btn btn-danger">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
 </div>
+
