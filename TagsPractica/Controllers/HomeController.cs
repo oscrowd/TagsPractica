@@ -70,6 +70,7 @@ namespace TagsPractica.Controllers
                 text = "dafault",
                 userId =  userIdString,
                 
+                
         };
             var DefaultComment = new Comment()
             {
@@ -83,8 +84,8 @@ namespace TagsPractica.Controllers
             };
             var DefaultPostTag = new PostTag()
             {
-                postId = 1,
-                tagId = 1
+                postId = DefaultPost.Id,
+                tagId = DefaultTag.Id
             };
 
             // Добавим в базу
@@ -94,10 +95,12 @@ namespace TagsPractica.Controllers
             await _userRepository.AddUser(newUser1);
             await _userRepository.AddUser(newUser2);
             await _userRepository.AddUser(newUser3);
+            await _postRepository.AddTag(DefaultTag);
             await _postRepository.AddPost(DefaultPost);
+
             //await _postRepository.AddComment(DefaultComment);
             //await _postRepository.AddTag(DefaultTag);
-            //await _postRepository.AddPostTag(DefaultPostTag);
+            await _postRepository.AddPostTag(DefaultPostTag);
 
             // Выведем результат
            // Console.WriteLine($"User with id {newUser.Id}, named {newUser.userName} was successfully added on {newUser.email}");

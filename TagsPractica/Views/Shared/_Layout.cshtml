@@ -26,16 +26,36 @@
                             <a class="nav-link" href="#">Ссылка</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Выпадающий список
+                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Пользователи
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Действие</a></li>
-                                <li><a class="dropdown-item" href="#">Другое действие</a></li>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Register2">Регистрация</a></li>
+                                }  
+                                else
+                                {
+                                   
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Authenticate2">Авторизация</a></li>
+                                }
+                                
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Что-то еще здесь</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Find">Поиск</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Edit">Редактирование</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="Users">Пользователи</a></li>
                             </ul>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Посты
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Posts" asp-action="Index">Все посты</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Posts" asp-action="Create">Создать пост</a></li>
+                                
+
+                            </ul>
                         <li class="nav-item">
                             <a class="nav-link disabled">Отключенная</a>
                         </li>

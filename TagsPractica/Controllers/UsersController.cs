@@ -308,7 +308,7 @@ namespace TagsPractica.Controllers
 
                 return View(model);
             }
-            exist = _userRepository.GetByLogin(model.userName);
+            exist = _userRepository.GetByLogin(model.userName, model.password);
 
 
             if (exist)
@@ -344,7 +344,7 @@ namespace TagsPractica.Controllers
 
                 user = _userRepository.GetByLogin2(model.userName, model.password);
 
-                bool exist = _userRepository.GetByLogin(model.userName);
+                bool exist = _userRepository.GetByLogin(model.userName, model.password);
 
                 if (exist)
                 {

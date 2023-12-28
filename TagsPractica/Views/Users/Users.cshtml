@@ -12,14 +12,14 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var student in Model)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@student.Id</td>
-                <td>@student.userName</td>
-                <td class="text-center"><a href="#" class="btn btn-primary" >View</a></td>
-                <td class="text-center"><a href="#" class="btn btn-primary">Edit</a></td>
-                <td class="text-center"><a href="#" class="btn btn-danger">Delete</a></td>
+                <td>@item.Id</td>
+                <td>@item.userName</td>
+                <td class="text-center"><a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">View</a></td>
+                <td class="text-center"><a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a></td>
+                <td class="text-center"><a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a></td>
             </tr>
         }
     </tbody>

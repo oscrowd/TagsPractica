@@ -42,10 +42,10 @@ namespace TagsPractica.DAL.Repositories
             var listRoles = user.Roles.ToList();
         }
 
-        public bool GetByLogin(string login)
+        public bool GetByLogin(string login, string password)
         {
             //var user =_context.Users.FirstOrDefault(v => v.userName == login);
-            bool validUser = _context.Users.Any(v => v.userName == login && v.password == login);
+            bool validUser = _context.Users.Any(v => v.userName == login && v.password == password);
             return validUser;
         }
 
@@ -54,7 +54,7 @@ namespace TagsPractica.DAL.Repositories
             //var user =_context.Users.FirstOrDefault(v => v.userName == login);
             //User user = new User();
             User user = new User();
-            var u = _context.Users.Where(v => v.userName == login && v.password == login);
+            var u = _context.Users.Where(v => v.userName == login && v.password == password);
             user = u.FirstOrDefault();
             if (user == null)
             {
