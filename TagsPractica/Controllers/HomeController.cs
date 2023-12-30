@@ -100,7 +100,7 @@ namespace TagsPractica.Controllers
 
             //await _postRepository.AddComment(DefaultComment);
             //await _postRepository.AddTag(DefaultTag);
-            await _postRepository.AddPostTag(DefaultPostTag);
+            //await _postRepository.AddPostTag(DefaultPostTag);
 
             // Выведем результат
            // Console.WriteLine($"User with id {newUser.Id}, named {newUser.userName} was successfully added on {newUser.email}");
