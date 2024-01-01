@@ -95,7 +95,7 @@ namespace TagsPractica.Controllers
             await _userRepository.AddUser(newUser1);
             await _userRepository.AddUser(newUser2);
             await _userRepository.AddUser(newUser3);
-            await _postRepository.AddTag(DefaultTag);
+            //await _postRepository.AddTag(DefaultTag);
             await _postRepository.AddPost(DefaultPost);
 
             //await _postRepository.AddComment(DefaultComment);

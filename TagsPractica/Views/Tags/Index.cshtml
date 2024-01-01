@@ -1,14 +1,13 @@
-﻿@model IEnumerable<TagsPractica.DAL.Models.Post>
- 
+﻿@model IEnumerable<TagsPractica.DAL.Models.Tag>
+
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.title)
-            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.text)
             </th>
@@ -16,21 +15,11 @@
         </tr>
     </thead>
     <tbody>
-
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.title)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.text)
-            </td>
-            <td>
-                    
-                    @foreach (Tag c in model => model.Tags)
-                    {
-                        <li>@c.Name</li>
-                    }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

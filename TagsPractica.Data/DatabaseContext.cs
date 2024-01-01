@@ -12,7 +12,7 @@ namespace TagsPractica.DAL
         public DbSet<Post> Posts  { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        public DbSet<PostTag> PostsTags { get; set; }
+        //public DbSet<PostTag> PostsTags { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -20,6 +20,8 @@ namespace TagsPractica.DAL
             Database.EnsureCreated();
             
         }
+       
+
        }
 }
 //https://professorweb.ru/my/entity-framework/6/level2/2_2.php?ysclid=lpk3pd88dq77284330
