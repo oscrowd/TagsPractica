@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TagsPractica.DAL;
 using TagsPractica.DAL.Models;
+using TagsPractica.ViewModels;
 
 namespace TagsPractica.Controllers
 {
@@ -22,9 +23,29 @@ namespace TagsPractica.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-              return _context.Posts != null ? 
-                          View(await _context.Posts.ToListAsync()) :
-                          Problem("Entity set 'DatabaseContext.Posts'  is null.");
+
+            //var posts = _context.Posts.OrderBy(m => m.title).ToList();
+            //var tags = _context.Tags.ToList();
+
+            //var model = new PostTagModel
+            //{
+            //    Posts = posts,
+            //    Tags = tags
+            //};
+
+
+            //return View(model);
+            //var p = _context.Posts.Include(m => m.Tags).ToList();
+            if (User.Identity.IsAuthenticated)
+            {
+                return _context.Posts != null ?
+                     View(await _context.Posts.Include(m => m.Tags).ToListAsync()) :
+                     Problem("Entity set 'DatabaseContext.Posts'  is null.");
+            }
+            else
+            {
+                return StatusCode(403);
+            }
         }
 
         // GET: Posts/Details/5

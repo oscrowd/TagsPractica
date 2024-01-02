@@ -89,14 +89,14 @@ namespace TagsPractica.Controllers
             };
 
             // Добавим в базу
-            await _roleRepository.AddRole(newRole1);
-            await _roleRepository.AddRole(newRole2);
-            await _roleRepository.AddRole(newRole3);
-            await _userRepository.AddUser(newUser1);
-            await _userRepository.AddUser(newUser2);
-            await _userRepository.AddUser(newUser3);
+            //await _roleRepository.AddRole(newRole1);
+            //await _roleRepository.AddRole(newRole2);
+            //await _roleRepository.AddRole(newRole3);
+            //await _userRepository.AddUser(newUser1);
+            //await _userRepository.AddUser(newUser2);
+            //await _userRepository.AddUser(newUser3);
             //await _postRepository.AddTag(DefaultTag);
-            await _postRepository.AddPost(DefaultPost);
+            //await _postRepository.AddPost(DefaultPost);
 
             //await _postRepository.AddComment(DefaultComment);
             //await _postRepository.AddTag(DefaultTag);
