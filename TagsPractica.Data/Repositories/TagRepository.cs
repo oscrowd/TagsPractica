@@ -35,7 +35,7 @@ namespace TagsPractica.DAL.Repositories
         // Добавление пользователя
         var entry = _context.Entry(postTag);
         if (entry.State == EntityState.Detached)
-        await _context.PostTag.AddAsync(postTag);
+        //await _context.PostTag.AddAsync(postTag);
 
         // Сохранение изенений
         await _context.SaveChangesAsync();

@@ -121,19 +121,26 @@ namespace TagsPractica.Controllers
         // GET: Tags/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Tags == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return NotFound();
-            }
+                if (id == null || _context.Tags == null)
+                {
+                    return NotFound();
+                }
 
-            var tag = await _context.Tags
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (tag == null)
+                var tag = await _context.Tags
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (tag == null)
+                {
+                    return NotFound();
+                }
+
+                return View(tag);
+            }
+            else
             {
-                return NotFound();
+                return StatusCode(403);
             }
-
-            return View(tag);
         }
 
         // POST: Tags/Delete/5

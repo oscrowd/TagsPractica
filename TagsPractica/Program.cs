@@ -57,8 +57,8 @@ namespace TagsPractica
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseAuthentication();  
-
+            app.UseAuthentication();
+            app.UseStatusCodePagesWithRedirects("/Error/Default?statusCode={0}");
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -70,10 +70,8 @@ namespace TagsPractica.Controllers
             {
                 title = "default",
                 text = "dafault",
-                userId =  userIdString,
-                
-                
-        };
+                userId = userIdString,
+            };
             var DefaultComment = new Comment()
             {
                 text = "dafault",
