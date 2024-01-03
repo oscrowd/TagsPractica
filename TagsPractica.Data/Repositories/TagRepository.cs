@@ -28,6 +28,17 @@ namespace TagsPractica.DAL.Repositories
             // Сохранение изенений
             await _context.SaveChangesAsync();
         }
-        
+
+        public async Task AddPostTag(PostTag postTag)
+        {
+
+        // Добавление пользователя
+        var entry = _context.Entry(postTag);
+        if (entry.State == EntityState.Detached)
+        await _context.PostTag.AddAsync(postTag);
+
+        // Сохранение изенений
+        await _context.SaveChangesAsync();
+        }
     }
 }

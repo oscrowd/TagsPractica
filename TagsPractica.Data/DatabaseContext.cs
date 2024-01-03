@@ -12,12 +12,12 @@ namespace TagsPractica.DAL
         public DbSet<Post> Posts  { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Tag> Tags { get; set; }
-        //public DbSet<PostTag> PostsTags { get; set; }
+        //public DbSet<PostTag> PostTag { get; set; }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
-            //Database.EnsureDeleted();
-            //Database.EnsureCreated();
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
             
         }
        

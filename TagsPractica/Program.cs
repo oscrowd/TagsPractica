@@ -25,6 +25,7 @@ namespace TagsPractica
             builder.Services.AddSingleton<IUserRepository, UserRepository>();
             builder.Services.AddSingleton<IRoleRepository, RoleRepository>();
             builder.Services.AddSingleton<IPostRepository, PostRepository>();
+            builder.Services.AddSingleton<ITagRepository, TagRepository>();
             builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlite(connectionSQL), ServiceLifetime.Singleton);
 
             //Аутентификация

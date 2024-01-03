@@ -36,16 +36,16 @@ namespace TagsPractica.Controllers
 
             //return View(model);
             //var p = _context.Posts.Include(m => m.Tags).ToList();
-            if (User.Identity.IsAuthenticated)
-            {
+            //if (User.Identity.IsAuthenticated)
+            //{
                 return _context.Posts != null ?
                      View(await _context.Posts.Include(m => m.Tags).ToListAsync()) :
                      Problem("Entity set 'DatabaseContext.Posts'  is null.");
-            }
-            else
-            {
-                return StatusCode(403);
-            }
+            //}
+            //else
+            //{
+            //    return StatusCode(403);
+            //}
         }
 
         // GET: Posts/Details/5
