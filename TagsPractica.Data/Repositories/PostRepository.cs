@@ -50,16 +50,16 @@ namespace TagsPractica.DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task AddPostTag(PostTag postTag)
-        {
+        //public async Task AddPostTag(PostTag postTag)
+        //{
 
             // Добавление пользователя
-            var entry = _context.Entry(postTag);
-            if (entry.State == EntityState.Detached)
-                await _context.PostsTags.AddAsync(postTag);
+            //var entry = _context.Entry(postTag);
+            //if (entry.State == EntityState.Detached)
+                //await _context.PostsTags.AddAsync(postTag);
 
             // Сохранение изенений
-            await _context.SaveChangesAsync();
-        }
+            //await _context.SaveChangesAsync();
+        //}
     }
 }

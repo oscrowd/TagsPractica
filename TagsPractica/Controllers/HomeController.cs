@@ -14,17 +14,19 @@ namespace TagsPractica.Controllers
         private IUserRepository _userRepository;
         private IRoleRepository _roleRepository;
         private IPostRepository _postRepository;
-
-        public HomeController(ILogger<HomeController> logger, IPostRepository postRepository, IRoleRepository roleRepository, IUserRepository userRepository)
+        private ITagRepository _tagRepository;
+        public HomeController(ILogger<HomeController> logger, IPostRepository postRepository, IRoleRepository roleRepository, IUserRepository userRepository, ITagRepository tagRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _postRepository = postRepository;
+            _tagRepository = tagRepository;
         }
 
         public async Task<IActionResult> Index(RegisterViewModel model)
         {
+            var guid =Guid.NewGuid;   
             // Добавим данные в БД
            var newRole1 = new Role()
             {
@@ -68,9 +70,8 @@ namespace TagsPractica.Controllers
             {
                 title = "default",
                 text = "dafault",
-                userId =  userIdString,
-                
-        };
+                userId = userIdString,
+            };
             var DefaultComment = new Comment()
             {
                 text = "dafault",
@@ -94,7 +95,9 @@ namespace TagsPractica.Controllers
             await _userRepository.AddUser(newUser1);
             await _userRepository.AddUser(newUser2);
             await _userRepository.AddUser(newUser3);
+            await _tagRepository.AddTag(DefaultTag);
             await _postRepository.AddPost(DefaultPost);
+
             //await _postRepository.AddComment(DefaultComment);
             //await _postRepository.AddTag(DefaultTag);
             //await _postRepository.AddPostTag(DefaultPostTag);

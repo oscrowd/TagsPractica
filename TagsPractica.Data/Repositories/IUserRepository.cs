@@ -8,7 +8,7 @@ namespace TagsPractica.DAL.Repositories
     public interface IUserRepository
     {
         Task AddUser(User user);
-        bool GetByLogin(string userName);
+        bool GetByLogin(string userName, string password);
         User GetByLogin2(string userName, string password);
         public Task<User> GetById(Guid id);
         public Task UpdateUser(User user, object model);

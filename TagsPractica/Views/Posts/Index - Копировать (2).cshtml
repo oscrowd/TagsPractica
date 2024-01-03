@@ -1,0 +1,36 @@
+﻿@model TagsPractica.ViewModels.PostTagModel
+ 
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@foreach (var p in Model.Posts)
+{
+    <tr>
+        <td>
+            @p.title
+        </td>
+        <td>
+            @p.text
+        </td>
+        <td>
+            @foreach (var t in Model.Tags)
+            {
+                @t.text
+            }
+        </td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@p.Id">Edit</a> |
+            <a asp-action="Details" asp-route-id="@p.Id">Details</a> |
+            <a asp-action="Delete" asp-route-id="@p.Id">Delete</a>
+        </td>
+    </tr>
+
+
+}
+
+
+
+        
+}
+    </tbody>
+</table>

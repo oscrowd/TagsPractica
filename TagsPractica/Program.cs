@@ -25,6 +25,7 @@ namespace TagsPractica
             builder.Services.AddSingleton<IUserRepository, UserRepository>();
             builder.Services.AddSingleton<IRoleRepository, RoleRepository>();
             builder.Services.AddSingleton<IPostRepository, PostRepository>();
+            builder.Services.AddSingleton<ITagRepository, TagRepository>();
             builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlite(connectionSQL), ServiceLifetime.Singleton);
 
             //Аутентификация
@@ -56,8 +57,8 @@ namespace TagsPractica
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseAuthentication();  
-
+            app.UseAuthentication();
+            app.UseStatusCodePagesWithRedirects("/Error/Default?statusCode={0}");
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
