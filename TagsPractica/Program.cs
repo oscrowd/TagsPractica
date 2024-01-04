@@ -4,6 +4,7 @@ using TagsPractica.DAL;
 using TagsPractica.DAL.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using NLog;
 
 namespace TagsPractica
 {
@@ -41,8 +42,14 @@ namespace TagsPractica
                         }
                     };
                 });
-           
 
+            Logger logger = LogManager.GetCurrentClassLogger();
+            logger.Trace("trace message");
+            logger.Debug("debug message");
+            logger.Warn("warn message");
+            logger.Error("error message");
+            logger.Fatal("fatal message");
+            logger.Info("info message");
 
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             var app = builder.Build();
