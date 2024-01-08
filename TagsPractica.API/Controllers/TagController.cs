@@ -7,56 +7,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TagsPractica.DAL;
 using TagsPractica.DAL.Models;
-using TagsPractica.ViewModels;
 
 namespace TagsPractica.Controllers
 {
-    public class PostsController : Controller
+    public class TagsController : Controller
     {
         private readonly DatabaseContext _context;
 
-        public PostsController(DatabaseContext context)
+        public TagsController(DatabaseContext context)
         {
             _context = context;
         }
 
-        // GET: Posts
+        // GET: Tags
         public async Task<IActionResult> Index()
         {
-
-            //var posts = _context.Posts.OrderBy(m => m.title).ToList();
-            //var tags = _context.Tags.ToList();
-
-            //var model = new PostTagModel
-            //{
-            //    Posts = posts,
-            //    Tags = tags
-            //};
-
-
-            //return View(model);
-            //var p = _context.Posts.Include(m => m.Tags).ToList();
-            //if (User.Identity.IsAuthenticated)
-            //{
-                return _context.Posts != null ?
-                     View(await _context.Posts.Include(m => m.Tags).ToListAsync()) :
-                     Problem("Entity set 'DatabaseContext.Posts'  is null.");
-            //}
-            //else
-            //{
-            //    return StatusCode(403);
-            //}
+              return _context.Tags != null ? 
+                          View(await _context.Tags.ToListAsync()) :
+                          Problem("Entity set 'DatabaseContext.Tags'  is null.");
         }
 
-        // GET: Posts/Details/5
+        // GET: Tags/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Posts == null)
+            if (id == null || _context.Tags == null)
             {
                 return NotFound();
             }
 
-            var post = await _context.Posts
+            var post = await _context.Tags
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {
@@ -66,53 +45,52 @@ namespace TagsPractica.Controllers
             return View(post);
         }
 
-        // GET: Posts/Create
+        // GET: Tags/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Posts/Create
+        // POST: Tags/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,title,text")] Post post)
+        public async Task<IActionResult> Create([Bind("Id,title,text")] Tag tag)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(post);
+                _context.Add(tag);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(post);
+            return View(tag);
         }
 
-        // GET: Posts/Edit/5
+        // GET: Tags/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Posts == null)
+            if (id == null || _context.Tags == null)
             {
                 return NotFound();
             }
 
-            var post = await _context.Posts.FindAsync(id);
-            if (post == null)  
-
+            var tag = await _context.Tags.FindAsync(id);
+            if (tag == null)
             {
                 return NotFound();
             }
-            return View(post);
+            return View(tag);
         }
 
-        // POST: Posts/Edit/5
+        // POST: Tags/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,title,text")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,title,text")] Tag tag)
         {
-            if (id != post.Id)
+            if (id != tag.Id)
             {
                 return NotFound();
             }
@@ -121,12 +99,12 @@ namespace TagsPractica.Controllers
             {
                 try
                 {
-                    _context.Update(post);
+                    _context.Update(tag);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PostExists(post.Id))
+                    if (!PostExists(tag.Id))
                     {
                         return NotFound();
                     }
@@ -137,40 +115,47 @@ namespace TagsPractica.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(post);
+            return View(tag);
         }
 
-        // GET: Posts/Delete/5
+        // GET: Tags/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Posts == null)
+            if (User.Identity.IsAuthenticated)
             {
-                return NotFound();
-            }
+                if (id == null || _context.Tags == null)
+                {
+                    return NotFound();
+                }
 
-            var post = await _context.Posts
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (post == null)
+                var tag = await _context.Tags
+                    .FirstOrDefaultAsync(m => m.Id == id);
+                if (tag == null)
+                {
+                    return NotFound();
+                }
+
+                return View(tag);
+            }
+            else
             {
-                return NotFound();
+                return StatusCode(403);
             }
-
-            return View(post);
         }
 
-        // POST: Posts/Delete/5
+        // POST: Tags/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Posts == null)
+            if (_context.Tags == null)
             {
-                return Problem("Entity set 'DatabaseContext.Posts'  is null.");
+                return Problem("Entity set 'DatabaseContext.Tags'  is null.");
             }
-            var post = await _context.Posts.FindAsync(id);
-            if (post != null)
+            var tag = await _context.Tags.FindAsync(id);
+            if (tag != null)
             {
-                _context.Posts.Remove(post);
+                _context.Tags.Remove(tag);
             }
             
             await _context.SaveChangesAsync();
@@ -179,7 +164,7 @@ namespace TagsPractica.Controllers
 
         private bool PostExists(int id)
         {
-          return (_context.Posts?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Tags?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
