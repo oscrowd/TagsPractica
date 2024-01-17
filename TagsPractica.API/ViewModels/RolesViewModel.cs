@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TagsPractica.ViewModels
+namespace TagsPractica.API.ViewModels
 {
     public class RolesViewModel
     {

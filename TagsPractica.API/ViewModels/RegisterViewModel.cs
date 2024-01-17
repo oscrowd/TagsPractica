@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.Metrics;
 using TagsPractica.DAL.Models;
 
-namespace TagsPractica.ViewModels
+namespace TagsPractica.API.ViewModels
 {
     public class RegisterViewModel
     {

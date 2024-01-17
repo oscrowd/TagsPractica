@@ -15,7 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\TagsPractica.BLL\TagsPractica.BLL.csproj" />
+    <ProjectReference Include="..\TagsPractica.Data\TagsPractica.Data.csproj" />
   </ItemGroup>
 
 </Project>
