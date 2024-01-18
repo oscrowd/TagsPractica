@@ -27,8 +27,8 @@ namespace TagsPractica.API
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "SomeNewsBlog API",
-                    Description = "News Blog created by Mellomanprost",
+                    Title = "Blog API",
+                    Description = "Blog",
                 });
                 var basePath = AppContext.BaseDirectory;
 
@@ -73,6 +73,12 @@ namespace TagsPractica.API
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
+                //app.UseSwaggerUI(config =>
+                //{
+                //    config.RoutePrefix =string.Empty;
+                //    config.SwaggerEndpoint("swagger/v1/swagger.json", "Notes API"); 
+                //}
+                //);
                 app.UseSwaggerUI();
             }
 

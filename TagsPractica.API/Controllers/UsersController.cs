@@ -35,9 +35,9 @@ namespace TagsPractica.API.Controllers
             _mapper = mapper;
         }
 
-        // GET: Users
+        
         [HttpGet]
-        //[Authorize(Roles ="Admin")]
+        [Route("GetUsers")]
         public async Task<IActionResult> Index()
         {
             var ListU = await _context.Users.ToListAsync();
@@ -54,6 +54,7 @@ namespace TagsPractica.API.Controllers
         
 
         [HttpPost]
+        [Route("AuthUser")]
         //[Route("authenticate")]
         public async Task<IActionResult> Authenticate2(AuthViewModel model)
         {
@@ -106,6 +107,7 @@ namespace TagsPractica.API.Controllers
         }
 
         [HttpPatch]
+        [Route("EditUsers")]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, EditViewModel model)
         {
@@ -139,6 +141,7 @@ namespace TagsPractica.API.Controllers
 
 
         [HttpDelete]
+        [Route("DelUsers")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             if (_context.Users == null)
