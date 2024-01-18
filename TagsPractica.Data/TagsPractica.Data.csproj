@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.14" />
     <PackageReference Include="NLog" Version="5.2.8" />
     <PackageReference Include="NLog.Config" Version="4.7.15" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
     <PackageReference Include="Twitter.Bootstrap.MVC" Version="2.1.6" />
     <PackageReference Include="Twitter.Bootstrap.Sass" Version="3.3.7" />
     <PackageReference Include="TwitterBootstrapMVC" Version="3.17.7" />

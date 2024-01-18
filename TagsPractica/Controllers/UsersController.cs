@@ -152,7 +152,7 @@ namespace TagsPractica.Controllers
                 return NotFound();
             }
             ViewViewModel model = new ViewViewModel();
-            model = _mapper.Map<ViewViewModel>(user);
+            _mapper.Map<ViewViewModel>(user);
             return View(model);
         }
 

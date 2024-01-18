@@ -107,16 +107,16 @@ namespace TagsPractica.Controllers
 
                 // Выведем результат
                 // Console.WriteLine($"User with id {newUser.Id}, named {newUser.userName} was successfully added on {newUser.email}");
-                Logger.Debug("Hi I am NLog Debug Level");
-                Logger.Info("Hi I am NLog Info Level");
-                Logger.Warn("Hi I am NLog Warn Level");
+                _logger.LogDebug("Hi I am NLog Debug Level");
+                _logger.LogInformation("Hi I am NLog Info Level");
+                _logger.LogWarning("Hi I am NLog Warn Level");
                 //throw new NullReferenceException();
                 return View(model);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Hi I am NLog Error Level");
-                Logger.Fatal(ex, "Hi I am NLog Fatal Level");
+                _logger.LogError(ex, "Hi I am NLog Error Level");
+                //_logger.Fatal(ex, "Hi I am NLog Fatal Level");
                 throw;
             }
         }
