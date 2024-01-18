@@ -31,7 +31,12 @@ namespace TagsPractica.API.Controllers
         {
             if (_context.Posts != null)
             {
-                //var PostList = await _context.Posts.Include(m => m.Tags).ToListAsync();
+                //var PostList = await _context.Posts.
+                //
+                //
+                //
+                //
+                //(m => m.Tags).ToListAsync();
                 var PostList = await _context.Posts.ToListAsync();
                 return StatusCode(200, PostList);
             }

@@ -35,7 +35,13 @@ namespace TagsPractica.API.Controllers
             _mapper = mapper;
         }
 
-        
+
+        /// <summary>
+        /// Тут все пользоввватели         
+        /// </summary>
+        /// <remarks>
+        /// Тут все пользователи
+        /// </remarks>
         [HttpGet]
         [Route("GetUsers")]
         public async Task<IActionResult> Index()
@@ -51,8 +57,20 @@ namespace TagsPractica.API.Controllers
                 return StatusCode(200, UsersList);
             }
         }
-        
 
+        /// <summary>
+        /// Авторизация аккаунта пользователя
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        ///     POST /Todo
+        ///     {
+        ///        "email": "test@gmail.com", 
+        ///        "password": "test123"
+        ///     }
+        ///
+        /// </remarks>
         [HttpPost]
         [Route("AuthUser")]
         //[Route("authenticate")]
@@ -106,6 +124,12 @@ namespace TagsPractica.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Редактирование аккаунта пользователя
+        /// </summary>
+        /// <remarks>
+        /// Тут поясняющие комментарии
+        /// </remarks>
         [HttpPatch]
         [Route("EditUsers")]
         //[ValidateAntiForgeryToken]
@@ -139,7 +163,12 @@ namespace TagsPractica.API.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Удаление аккаунта пользователя
+        /// </summary>
+        /// <remarks>
+        /// Для редактирования данных пользователя необходимы права администратора
+        /// </remarks>
         [HttpDelete]
         [Route("DelUsers")]
         public async Task<IActionResult> DeleteConfirmed(Guid id)

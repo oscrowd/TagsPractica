@@ -33,7 +33,13 @@ namespace TagsPractica.API
                 var basePath = AppContext.BaseDirectory;
 
                 var xmlPath = Path.Combine(basePath, "TagsPractica.API.xml");
-                //options.IncludeXmlComments(xmlPath);
+                options.IncludeXmlComments(xmlPath);
+                //
+                //
+                //
+                //
+                //
+
             });
 
             var mapperConfig = new MapperConfiguration((v) =>

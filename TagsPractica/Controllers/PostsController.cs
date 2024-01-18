@@ -35,7 +35,15 @@ namespace TagsPractica.Controllers
 
 
             //return View(model);
-            //var p = _context.Posts.Include(m => m.Tags).ToList();
+            //var p = _context.Posts.
+            //
+            //
+            //
+            //
+            //
+            //
+            //
+            //(m => m.Tags).ToList();
             //if (User.Identity.IsAuthenticated)
             //{
                 return _context.Posts != null ?
