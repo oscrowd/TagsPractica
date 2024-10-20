@@ -18,6 +18,7 @@ namespace TagsPractica.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            // Тренируемся с версиями
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
